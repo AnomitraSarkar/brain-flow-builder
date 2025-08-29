@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   ReactFlow,
   Background,
@@ -64,6 +64,34 @@ export const NetworkCanvas = ({
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  // Sync nodes and edges with layers
+  useEffect(() => {
+    const updatedNodes: Node[] = layers.map(layer => ({
+      id: layer.id,
+      type: 'networkLayer',
+      position: layer.position,
+      data: {
+        layer,
+        isSelected: selectedLayer?.id === layer.id,
+        onSelect: () => onLayerSelect(layer),
+        onDelete: () => onLayerDelete(layer.id),
+      },
+    }));
+
+    const updatedEdges: Edge[] = layers.flatMap(layer =>
+      layer.connections?.map(targetId => ({
+        id: `${layer.id}-${targetId}`,
+        source: layer.id,
+        target: targetId,
+        type: 'smoothstep',
+        style: { stroke: 'hsl(var(--primary))' },
+      })) || []
+    );
+
+    setNodes(updatedNodes);
+    setEdges(updatedEdges);
+  }, [layers, selectedLayer, onLayerSelect, onLayerDelete, setNodes, setEdges]);
 
   const onConnect = useCallback(
     (params: Connection) => {
