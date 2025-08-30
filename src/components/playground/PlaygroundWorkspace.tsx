@@ -24,13 +24,45 @@ export const PlaygroundWorkspace = () => {
   const [showInspector, setShowInspector] = useState(true);
   const [showMetrics, setShowMetrics] = useState(true);
 
+  // Weight initialization functions
+  const initializeWeights = (type: LayerConfig['type'], params: any): { weights?: number[][], biases?: number[] } => {
+    switch (type) {
+      case 'dense':
+        const units = params.units || 128;
+        const inputSize = 128; // Default input size
+        const weights = Array.from({ length: inputSize }, () =>
+          Array.from({ length: units }, () => (Math.random() - 0.5) * 0.1)
+        );
+        const biases = Array.from({ length: units }, () => (Math.random() - 0.5) * 0.01);
+        return { weights, biases };
+      
+      case 'conv2d':
+        const filters = params.filters || 32;
+        const kernelSize = params.kernel_size || [3, 3];
+        const channels = 3; // Default channels
+        const weights2d = Array.from({ length: filters }, () =>
+          Array.from({ length: kernelSize[0] * kernelSize[1] * channels }, () => (Math.random() - 0.5) * 0.1)
+        );
+        const biases2d = Array.from({ length: filters }, () => (Math.random() - 0.5) * 0.01);
+        return { weights: weights2d, biases: biases2d };
+      
+      default:
+        return {};
+    }
+  };
+
   const addLayer = (layerType: LayerConfig['type']) => {
+    const params = getDefaultParams(layerType);
+    const { weights, biases } = initializeWeights(layerType, params);
+    
     const newLayer: LayerConfig = {
       id: `${layerType}-${Date.now()}`,
       type: layerType,
       name: `${layerType.charAt(0).toUpperCase() + layerType.slice(1)} Layer`,
       position: { x: 200 + layers.length * 150, y: 100 },
-      params: getDefaultParams(layerType),
+      params,
+      weights,
+      biases,
       connections: []
     };
     

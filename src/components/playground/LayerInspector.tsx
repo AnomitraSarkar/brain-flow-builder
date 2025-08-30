@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Trash2, Settings, Eye, BarChart3 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { WeightsEditor } from "./WeightsEditor";
 
 interface LayerInspectorProps {
   selectedLayer: LayerConfig | null;
@@ -109,7 +110,7 @@ export const LayerInspector = ({
           </TabsContent>
 
           <TabsContent value="weights" className="p-4">
-            <WeightsVisualization layer={selectedLayer} />
+            <WeightsEditor layer={selectedLayer} onUpdateLayer={onLayerUpdate} />
           </TabsContent>
 
           <TabsContent value="stats" className="p-4">
@@ -155,7 +156,12 @@ const LayerParameters = ({
                 <SelectItem value="relu">ReLU</SelectItem>
                 <SelectItem value="sigmoid">Sigmoid</SelectItem>
                 <SelectItem value="tanh">Tanh</SelectItem>
+                <SelectItem value="swish">Swish</SelectItem>
+                <SelectItem value="gelu">GELU</SelectItem>
+                <SelectItem value="elu">ELU</SelectItem>
+                <SelectItem value="leaky_relu">Leaky ReLU</SelectItem>
                 <SelectItem value="linear">Linear</SelectItem>
+                <SelectItem value="softmax">Softmax</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -167,6 +173,28 @@ const LayerParameters = ({
               onValueChange={([value]) => onUpdateParam('dropout', value)}
               max={0.5}
               step={0.01}
+              className="mt-2"
+            />
+          </div>
+          
+          <div>
+            <Label>L1 Regularization: {layer.params.l1_regularization || 0}</Label>
+            <Slider
+              value={[layer.params.l1_regularization || 0]}
+              onValueChange={([value]) => onUpdateParam('l1_regularization', value)}
+              max={0.01}
+              step={0.0001}
+              className="mt-2"
+            />
+          </div>
+          
+          <div>
+            <Label>L2 Regularization: {layer.params.l2_regularization || 0}</Label>
+            <Slider
+              value={[layer.params.l2_regularization || 0]}
+              onValueChange={([value]) => onUpdateParam('l2_regularization', value)}
+              max={0.01}
+              step={0.0001}
               className="mt-2"
             />
           </div>
@@ -205,6 +233,24 @@ const LayerParameters = ({
           </div>
           
           <div>
+            <Label>Strides</Label>
+            <div className="grid grid-cols-2 gap-2 mt-1">
+              <Input
+                type="number"
+                value={layer.params.strides?.[0] || 1}
+                onChange={(e) => onUpdateParam('strides', [parseInt(e.target.value), layer.params.strides?.[1] || 1])}
+                placeholder="Height"
+              />
+              <Input
+                type="number"
+                value={layer.params.strides?.[1] || 1}
+                onChange={(e) => onUpdateParam('strides', [layer.params.strides?.[0] || 1, parseInt(e.target.value)])}
+                placeholder="Width"
+              />
+            </div>
+          </div>
+          
+          <div>
             <Label>Padding</Label>
             <Select
               value={layer.params.padding || 'valid'}
@@ -216,6 +262,28 @@ const LayerParameters = ({
               <SelectContent>
                 <SelectItem value="valid">Valid</SelectItem>
                 <SelectItem value="same">Same</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div>
+            <Label>Activation</Label>
+            <Select
+              value={layer.params.activation || 'relu'}
+              onValueChange={(value) => onUpdateParam('activation', value)}
+            >
+              <SelectTrigger className="mt-1">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="relu">ReLU</SelectItem>
+                <SelectItem value="sigmoid">Sigmoid</SelectItem>
+                <SelectItem value="tanh">Tanh</SelectItem>
+                <SelectItem value="swish">Swish</SelectItem>
+                <SelectItem value="gelu">GELU</SelectItem>
+                <SelectItem value="elu">ELU</SelectItem>
+                <SelectItem value="leaky_relu">Leaky ReLU</SelectItem>
+                <SelectItem value="linear">Linear</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -272,20 +340,6 @@ const LayerParameters = ({
   }
 };
 
-const WeightsVisualization = ({ layer }: { layer: LayerConfig }) => {
-  return (
-    <div className="space-y-4">
-      <div className="text-center">
-        <div className="w-full h-32 bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg flex items-center justify-center mb-4">
-          <p className="text-muted-foreground">Weights visualization coming soon</p>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Interactive weight matrix and bias visualization will be displayed here.
-        </p>
-      </div>
-    </div>
-  );
-};
 
 const LayerStatistics = ({ layer }: { layer: LayerConfig }) => {
   const getLayerStats = (layer: LayerConfig) => {
