@@ -4,6 +4,7 @@ import { LayerConfig, TrainingMetrics } from "@/types/neural-network";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, TrendingUp, Zap, Eye } from "lucide-react";
 import * as d3 from "d3";
+import { WeightHistogramMini } from "@/components/playground/charts/WeightHistogramMini";
 
 interface MetricsPanelProps {
   layers: LayerConfig[];
@@ -141,14 +142,14 @@ const WeightsChart = ({ layers }: { layers: LayerConfig[] }) => {
       <div className="neural-card p-4">
         <h3 className="font-medium mb-4">Weight Distribution by Layer</h3>
         <div className="grid grid-cols-2 gap-4">
-          {layers.filter(l => l.type === 'dense' || l.type === 'conv2d').map(layer => (
-            <div key={layer.id} className="bg-muted/20 rounded-lg p-3">
-              <div className="text-sm font-medium mb-2">{layer.name}</div>
-              <div className="h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded flex items-center justify-center">
-                <span className="text-xs text-muted-foreground">Histogram</span>
+          {layers
+            .filter((l) => (l.type === 'dense' || l.type === 'conv2d') && l.weights)
+            .map((layer) => (
+              <div key={layer.id} className="bg-muted/20 rounded-lg p-3">
+                <div className="text-sm font-medium mb-2">{layer.name}</div>
+                <WeightHistogramMini weights={layer.weights} width={260} height={96} />
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>

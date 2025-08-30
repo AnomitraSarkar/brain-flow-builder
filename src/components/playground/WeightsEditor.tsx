@@ -16,6 +16,7 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
   const histogramRef = useRef<SVGSVGElement>(null);
   const heatmapRef = useRef<SVGSVGElement>(null);
   const biasChartRef = useRef<SVGSVGElement>(null);
+  const functionRef = useRef<SVGSVGElement>(null);
 
   // Generate random weights
   const regenerateWeights = () => {
@@ -80,9 +81,11 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
     });
   };
 
+  const isActivation = layer.type === 'relu' || layer.type === 'tanh' || layer.type === 'sigmoid';
+
   // D3.js Weight Distribution Histogram
   useEffect(() => {
-    if (!histogramRef.current || !layer.weights) return;
+    if (!histogramRef.current || !layer.weights || isActivation) return;
 
     const svg = d3.select(histogramRef.current);
     svg.selectAll("*").remove();
@@ -98,7 +101,7 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
       .range([0, width]);
 
     const histogram = d3.histogram()
-      .value(d => d)
+      .value(d => d as number)
       .domain(x.domain() as [number, number])
       .thresholds(20);
 
@@ -129,28 +132,17 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
     g.append("g")
       .call(d3.axisLeft(y));
 
-    g.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x", 0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .style("font-size", "12px")
-      .style("fill", "hsl(var(--foreground))")
-      .text("Frequency");
-
-    g.append("text")
-      .attr("transform", `translate(${width / 2}, ${height + margin.bottom})`)
-      .style("text-anchor", "middle")
-      .style("font-size", "12px")
-      .style("fill", "hsl(var(--foreground))")
-      .text("Weight Value");
-
-  }, [layer.weights]);
+    g.append("line")
+      .attr("x1", 0)
+      .attr("x2", width)
+      .attr("y1", y(0))
+      .attr("y2", y(0))
+      .attr("stroke", "hsl(var(--border))");
+  }, [layer.weights, isActivation]);
 
   // D3.js Weight Heatmap
   useEffect(() => {
-    if (!heatmapRef.current || !layer.weights) return;
+    if (!heatmapRef.current || !layer.weights || isActivation) return;
 
     const svg = d3.select(heatmapRef.current);
     svg.selectAll("*").remove();
@@ -163,15 +155,13 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
     const maxRows = Math.min(weights.length, 20);
     const maxCols = Math.min(weights[0]?.length || 0, 20);
 
-    const cellWidth = width / maxCols;
-    const cellHeight = height / maxRows;
+    const cellWidth = width / Math.max(1, maxCols);
+    const cellHeight = height / Math.max(1, maxRows);
 
     const weightExtent = d3.extent(weights.flat()) as [number, number];
-    const colorScale = d3.scaleSequential(d3.interpolateRdBu)
-      .domain(weightExtent);
+    const colorScale = d3.scaleSequential(d3.interpolateRdBu).domain(weightExtent);
 
-    const g = svg.append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
     for (let i = 0; i < maxRows; i++) {
       for (let j = 0; j < maxCols; j++) {
@@ -181,16 +171,15 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
           .attr("width", cellWidth)
           .attr("height", cellHeight)
           .attr("fill", colorScale(weights[i]?.[j] || 0))
-          .attr("stroke", "white")
+          .attr("stroke", "hsl(var(--border))")
           .attr("stroke-width", 0.5);
       }
     }
-
-  }, [layer.weights]);
+  }, [layer.weights, isActivation]);
 
   // D3.js Bias Chart
   useEffect(() => {
-    if (!biasChartRef.current || !layer.biases) return;
+    if (!biasChartRef.current || !layer.biases || isActivation) return;
 
     const svg = d3.select(biasChartRef.current);
     svg.selectAll("*").remove();
@@ -204,10 +193,8 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
       .range([0, width])
       .padding(0.1);
 
-    const y = d3.scaleLinear()
-      .domain(d3.extent(layer.biases) as [number, number])
-      .nice()
-      .range([height, 0]);
+    const extent = d3.extent(layer.biases) as [number, number];
+    const y = d3.scaleLinear().domain([Math.min(0, extent[0]), Math.max(0, extent[1])]).nice().range([height, 0]);
 
     const g = svg.append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -236,10 +223,9 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
       .attr("y2", y(0))
       .attr("stroke", "hsl(var(--border))")
       .attr("stroke-width", 2);
+  }, [layer.biases, isActivation]);
 
-  }, [layer.biases]);
-
-  if (!layer.weights && !layer.biases) {
+  if (!layer.weights && !layer.biases && !isActivation) {
     return (
       <div className="space-y-4 text-center">
         <p className="text-muted-foreground">No weights or biases to visualize for this layer type.</p>
@@ -348,4 +334,51 @@ export const WeightsEditor = ({ layer, onUpdateLayer }: WeightsEditorProps) => {
       </Tabs>
     </div>
   );
+  // Activation function plot
+  useEffect(() => {
+    if (!functionRef.current || !isActivation) return;
+
+    const svg = d3.select(functionRef.current);
+    svg.selectAll('*').remove();
+
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const width = 300 - margin.left - margin.right;
+    const height = 200 - margin.top - margin.bottom;
+
+    const x = d3.scaleLinear().domain([-5, 5]).range([0, width]);
+
+    const yDomain = layer.type === 'relu' ? [0, 5] : layer.type === 'sigmoid' ? [0, 1] : [-1.2, 1.2];
+    const y = d3.scaleLinear().domain(yDomain as [number, number]).range([height, 0]);
+
+    const line = d3
+      .line<number>()
+      .x((d) => x(d))
+      .y((d) => {
+        const fx =
+          layer.type === 'relu'
+            ? Math.max(0, d)
+            : layer.type === 'sigmoid'
+            ? 1 / (1 + Math.exp(-d))
+            : Math.tanh(d);
+        return y(fx);
+      });
+
+    const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const xs = d3.range(-5, 5.01, 0.05);
+
+    g.append('path')
+      .datum(xs)
+      .attr('fill', 'none')
+      .attr('stroke', 'hsl(var(--primary))')
+      .attr('stroke-width', 2)
+      .attr('d', line);
+
+    g.append('g').attr('transform', `translate(0,${height})`).call(d3.axisBottom(x));
+    g.append('g').call(d3.axisLeft(y));
+
+    // x and y axes lines
+    g.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', 0).attr('y2', height).attr('stroke', 'hsl(var(--border))');
+    g.append('line').attr('x1', 0).attr('x2', width).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', 'hsl(var(--border))');
+  }, [isActivation, layer.type]);
 };

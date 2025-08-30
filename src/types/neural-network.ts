@@ -1,6 +1,17 @@
 export interface LayerConfig {
   id: string;
-  type: 'dense' | 'conv2d' | 'maxpool' | 'avgpool' | 'flatten' | 'batchnorm' | 'softmax' | 'input';
+  type:
+    | 'dense'
+    | 'conv2d'
+    | 'maxpool'
+    | 'avgpool'
+    | 'flatten'
+    | 'batchnorm'
+    | 'softmax'
+    | 'input'
+    | 'relu'
+    | 'tanh'
+    | 'sigmoid';
   name: string;
   position: { x: number; y: number };
   params: {
@@ -10,16 +21,16 @@ export interface LayerConfig {
     dropout?: number;
     l1_regularization?: number;
     l2_regularization?: number;
-    
+
     // Conv2D params
     filters?: number;
     kernel_size?: [number, number];
     strides?: [number, number];
     padding?: 'valid' | 'same';
-    
+
     // Pooling params
     pool_size?: [number, number];
-    
+
     // Input params
     input_shape?: number[];
   };

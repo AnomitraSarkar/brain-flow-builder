@@ -33,7 +33,11 @@ const getLayerIcon = (type: LayerConfig['type']) => {
     case 'avgpool': return Maximize;
     case 'flatten': return Layers;
     case 'batchnorm': return MoreHorizontal;
-    case 'softmax': return Circle;
+    case 'relu':
+    case 'tanh':
+    case 'sigmoid':
+    case 'softmax':
+      return Circle;
     default: return Circle;
   }
 };
@@ -47,6 +51,9 @@ const getLayerColor = (type: LayerConfig['type']) => {
     case 'avgpool': return 'from-accent to-secondary';
     case 'flatten': return 'from-secondary to-primary';
     case 'batchnorm': return 'from-primary to-secondary';
+    case 'relu': return 'from-primary to-accent';
+    case 'tanh': return 'from-secondary to-primary';
+    case 'sigmoid': return 'from-accent to-secondary';
     case 'softmax': return 'from-accent to-primary';
     default: return 'from-muted to-muted-foreground';
   }
@@ -63,6 +70,11 @@ const getLayerInfo = (layer: LayerConfig) => {
       return `${layer.params.pool_size?.[0] || 2}x${layer.params.pool_size?.[1] || 2}`;
     case 'input':
       return `${layer.params.input_shape?.join('x') || 'undefined'}`;
+    case 'relu':
+    case 'tanh':
+    case 'sigmoid':
+    case 'softmax':
+      return `${layer.type.toUpperCase()} activation`;
     default:
       return '';
   }

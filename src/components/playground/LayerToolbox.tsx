@@ -67,6 +67,27 @@ export const LayerToolbox = ({ onAddLayer }: LayerToolboxProps) => {
       description: 'Batch normalization'
     },
     {
+      type: 'relu' as const,
+      name: 'ReLU',
+      icon: Circle,
+      color: 'from-primary to-accent',
+      description: 'Rectified Linear Unit'
+    },
+    {
+      type: 'tanh' as const,
+      name: 'Tanh',
+      icon: Circle,
+      color: 'from-primary to-secondary',
+      description: 'Hyperbolic tangent activation'
+    },
+    {
+      type: 'sigmoid' as const,
+      name: 'Sigmoid',
+      icon: Circle,
+      color: 'from-accent to-secondary',
+      description: 'Sigmoid activation'
+    },
+    {
       type: 'softmax' as const,
       name: 'Softmax',
       icon: Circle,

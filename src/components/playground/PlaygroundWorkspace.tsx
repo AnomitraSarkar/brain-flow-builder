@@ -92,6 +92,11 @@ export const PlaygroundWorkspace = () => {
       case 'maxpool':
       case 'avgpool':
         return { pool_size: [2, 2] as [number, number], strides: [2, 2] as [number, number] };
+      case 'relu':
+      case 'tanh':
+      case 'sigmoid':
+      case 'softmax':
+        return { activation: type };
       default:
         return {};
     }

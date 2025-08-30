@@ -23,24 +23,28 @@ export const LayerInspector = ({
 }: LayerInspectorProps) => {
   const [localLayer, setLocalLayer] = useState<LayerConfig | null>(selectedLayer);
 
+  // keep local state in sync with selection
+  // using effect to avoid state updates during render
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setLocalLayer(selectedLayer);
+  }, [selectedLayer]);
+
   const updateParam = (key: string, value: any) => {
     if (!localLayer) return;
-    
     const updatedLayer = {
       ...localLayer,
       params: {
         ...localLayer.params,
-        [key]: value
-      }
+        [key]: value,
+      },
     };
-    
     setLocalLayer(updatedLayer);
     onLayerUpdate(updatedLayer);
   };
 
   const updateName = (name: string) => {
     if (!localLayer) return;
-    
     const updatedLayer = { ...localLayer, name };
     setLocalLayer(updatedLayer);
     onLayerUpdate(updatedLayer);
@@ -80,7 +84,7 @@ export const LayerInspector = ({
           <Label htmlFor="layer-name">Layer Name</Label>
           <Input
             id="layer-name"
-            value={localLayer?.name || selectedLayer.name}
+            value={localLayer?.name || ''}
             onChange={(e) => updateName(e.target.value)}
             className="bg-background/50"
           />
@@ -106,11 +110,15 @@ export const LayerInspector = ({
           </TabsList>
 
           <TabsContent value="parameters" className="p-4 space-y-4">
-            <LayerParameters layer={selectedLayer} onUpdateParam={updateParam} />
+            {localLayer && (
+              <LayerParameters layer={localLayer} onUpdateParam={updateParam} />
+            )}
           </TabsContent>
 
           <TabsContent value="weights" className="p-4">
-            <WeightsEditor layer={selectedLayer} onUpdateLayer={onLayerUpdate} />
+            {localLayer && (
+              <WeightsEditor layer={localLayer} onUpdateLayer={onLayerUpdate} />
+            )}
           </TabsContent>
 
           <TabsContent value="stats" className="p-4">
