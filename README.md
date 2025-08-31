@@ -71,3 +71,32 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## Todo:
+[-] Setup Save settings using firebase or auth using supabase
+[-] Load using ml files parsers, or just include tensorflow.js 
+[-] Function representation in model representation for activation functions 
+[-] save in ml based formats
+[-] pip library for this representational ai using some gradio af interface, hosted locally or something
+
+### Features list 
+1. 2d view
+2. 3d view 
+3. weight visualization: Xavier Initialization
+4. Model creation (all the base layers and activation functions)
+5. 
+6. Architectural Overview
+7. Load file in Json 
+8. Save file in Json 
+9. Load/Save in different MLops formats
+10. OAuth for local storage and overview 
+11. Quick Architectures  
+12. Weight Distribution by Layer Historgram
+13. '' - '' Functions 
+14. activation Repr 
+15. Layer Inspector menu for customization
+16. Trainable params setups
+17. Params count up  
+18. Customization Fully available
+19. Hostable pip library to make it work with python dynamically
+20. Documentation
