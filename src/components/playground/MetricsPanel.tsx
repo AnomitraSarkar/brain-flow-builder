@@ -147,10 +147,11 @@ const WeightsChart = ({ layers }: { layers: LayerConfig[] }) => {
         <h3 className="font-medium mb-4">Weight Distribution by Layer</h3>
         <div className="grid grid-cols-2 gap-4">
           {layers
-            .filter((l) => 
-              (l.type === 'dense' || l.type === 'conv2d') && l.weights || 
-              isActivationLayer(l)
-            )
+            .filter((l) => {
+              // Show dense/conv2d layers with weights OR activation layers
+              return ((l.type === 'dense' || l.type === 'conv2d') && l.weights) || 
+                     isActivationLayer(l);
+            })
             .map((layer) => (
               <div key={layer.id} className="bg-muted/20 rounded-lg p-3">
                 <div className="text-sm font-medium mb-2">{layer.name}</div>
