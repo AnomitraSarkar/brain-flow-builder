@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, TrendingUp, Zap, Eye } from "lucide-react";
 import * as d3 from "d3";
 import { WeightHistogramMini } from "@/components/playground/charts/WeightHistogramMini";
+import { ActivationFunctionMini } from "@/components/playground/charts/ActivationFunctionMini";
 
 interface MetricsPanelProps {
   layers: LayerConfig[];
@@ -137,17 +138,31 @@ const TrainingChart = ({
 };
 
 const WeightsChart = ({ layers }: { layers: LayerConfig[] }) => {
+  const isActivationLayer = (layer: LayerConfig) => 
+    ['relu', 'tanh', 'sigmoid'].includes(layer.type);
+
   return (
     <div className="space-y-4">
       <div className="neural-card p-4">
         <h3 className="font-medium mb-4">Weight Distribution by Layer</h3>
         <div className="grid grid-cols-2 gap-4">
           {layers
-            .filter((l) => (l.type === 'dense' || l.type === 'conv2d') && l.weights)
+            .filter((l) => 
+              (l.type === 'dense' || l.type === 'conv2d') && l.weights || 
+              isActivationLayer(l)
+            )
             .map((layer) => (
               <div key={layer.id} className="bg-muted/20 rounded-lg p-3">
                 <div className="text-sm font-medium mb-2">{layer.name}</div>
-                <WeightHistogramMini weights={layer.weights} width={260} height={96} />
+                {isActivationLayer(layer) ? (
+                  <ActivationFunctionMini 
+                    kind={layer.type as 'relu' | 'tanh' | 'sigmoid'} 
+                    width={260} 
+                    height={96} 
+                  />
+                ) : (
+                  <WeightHistogramMini weights={layer.weights} width={260} height={96} />
+                )}
               </div>
             ))}
         </div>
