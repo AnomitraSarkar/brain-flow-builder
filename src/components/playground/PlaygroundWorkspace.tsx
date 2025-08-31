@@ -92,6 +92,10 @@ export const PlaygroundWorkspace = () => {
       case 'maxpool':
       case 'avgpool':
         return { pool_size: [2, 2] as [number, number], strides: [2, 2] as [number, number] };
+      case 'lstm':
+        return { hidden_size: 128, num_layers: 1, bidirectional: false, return_sequences: true };
+      case 'gru':
+        return { hidden_size: 128, num_layers: 1, bidirectional: false, return_sequences: true };
       case 'relu':
       case 'tanh':
       case 'sigmoid':

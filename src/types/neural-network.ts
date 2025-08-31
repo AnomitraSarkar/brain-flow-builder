@@ -11,7 +11,9 @@ export interface LayerConfig {
     | 'input'
     | 'relu'
     | 'tanh'
-    | 'sigmoid';
+    | 'sigmoid'
+    | 'lstm'
+    | 'gru';
   name: string;
   position: { x: number; y: number };
   params: {
@@ -33,6 +35,12 @@ export interface LayerConfig {
 
     // Input params
     input_shape?: number[];
+
+    // RNN params
+    hidden_size?: number;
+    num_layers?: number;
+    bidirectional?: boolean;
+    return_sequences?: boolean;
   };
   weights?: number[][];
   biases?: number[];
