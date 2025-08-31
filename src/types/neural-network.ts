@@ -1,19 +1,71 @@
 export interface LayerConfig {
   id: string;
   type:
+    // Core Layers (Trainable)
     | 'dense'
+    | 'conv1d'
     | 'conv2d'
+    | 'conv3d'
+    | 'depthwise'
+    | 'transposed'
+    | 'embedding'
+    | 'attention'
+    | 'multihead_attention'
+    | 'transformer_encoder'
+    | 'transformer_decoder'
+    | 'rnn'
+    | 'lstm'
+    | 'gru'
+    // Operators (Stateless)
     | 'maxpool'
     | 'avgpool'
-    | 'flatten'
-    | 'batchnorm'
+    | 'globalmax'
+    | 'globalavg'
     | 'softmax'
-    | 'input'
-    | 'relu'
-    | 'tanh'
+    | 'batchnorm'
+    | 'layernorm'
+    | 'groupnorm'
+    | 'instancenorm'
+    | 'dropout'
+    | 'flatten'
+    | 'reshape'
+    | 'concatenate'
+    | 'split'
+    | 'padding'
+    | 'cropping'
+    // Activations
     | 'sigmoid'
-    | 'lstm'
-    | 'gru';
+    | 'tanh'
+    | 'relu'
+    | 'leaky_relu'
+    | 'prelu'
+    | 'elu'
+    | 'relu6'
+    | 'gelu'
+    | 'swish'
+    | 'mish'
+    | 'softsign'
+    | 'hard_sigmoid'
+    | 'hard_tanh'
+    | 'maxout'
+    // Sequential (Memory)
+    | 'bidirectional_rnn'
+    | 'bidirectional_lstm'
+    | 'bidirectional_gru'
+    | 'attention_seq'
+    | 'transformer_seq'
+    // Structural
+    | 'residual'
+    | 'highway'
+    | 'gcn'
+    | 'gat'
+    | 'graphsage'
+    | 'capsule'
+    // Output Layers
+    | 'linear_output'
+    | 'softmax_output'
+    | 'sigmoid_output'
+    | 'input';
   name: string;
   position: { x: number; y: number };
   params: {

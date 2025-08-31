@@ -162,10 +162,10 @@ export const NetworkCanvas = ({
           size={1}
         />
         <Controls 
-          className="bg-card/80 border border-border/50 rounded-lg"
+          className="bg-card/90 border border-primary/20 rounded-xl shadow-lg backdrop-blur-sm"
         />
         <MiniMap 
-          className="bg-card/80 border border-border/50 rounded-lg"
+          className="bg-card/90 border border-primary/20 rounded-xl shadow-lg backdrop-blur-sm"
           nodeColor={(node) => {
             const layer = layers.find(l => l.id === node.id);
             switch (layer?.type) {
