@@ -1,5 +1,6 @@
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/neural-network-hero.jpg";
 
 export const HeroSection = () => {
@@ -38,13 +39,17 @@ export const HeroSection = () => {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Button className="neural-button-hero group">
-              Try Demo
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            <Button asChild className="neural-button-hero group">
+              <Link to="/playground">
+                Try Demo
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
-            <Button variant="outline" className="neural-button-secondary group">
-              <Play className="mr-2 h-4 w-4" />
-              Watch Demo
+            <Button asChild variant="outline" className="neural-button-secondary group">
+              <Link to="/docs">
+                <Play className="mr-2 h-4 w-4" />
+                View Documentation
+              </Link>
             </Button>
           </div>
           

@@ -1,5 +1,6 @@
 import { Play, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export const DemoSection = () => {
   return (
@@ -34,13 +35,17 @@ export const DemoSection = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="neural-button-hero group">
-                <Play className="mr-2 h-4 w-4" />
-                Launch Playground
-                <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <Button asChild className="neural-button-hero group">
+                <Link to="/playground">
+                  <Play className="mr-2 h-4 w-4" />
+                  Launch Playground
+                  <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </Button>
-              <Button variant="outline" className="neural-button-secondary">
-                View Documentation
+              <Button asChild variant="outline" className="neural-button-secondary">
+                <Link to="/docs">
+                  View Documentation
+                </Link>
               </Button>
             </div>
           </div>
