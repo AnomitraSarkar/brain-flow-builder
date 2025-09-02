@@ -2,8 +2,8 @@ import { Github, Twitter, MessageCircle } from "lucide-react";
 
 export const Footer = () => {
   const socialLinks = [
-    { name: "GitHub", href: "#", icon: Github },
-    { name: "Twitter", href: "#", icon: Twitter },
+    { name: "GitHub", href: "https://github.com/Dezors-Service-And-Consultancy", icon: Github },
+    { name: "Twitter", href: "https://x.com/", icon: Twitter },
     { name: "Discord", href: "#", icon: MessageCircle },
   ];
 

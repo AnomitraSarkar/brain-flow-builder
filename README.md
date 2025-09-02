@@ -75,10 +75,11 @@ Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-trick
 ## Todo:
 [-] Setup Save settings using firebase or auth using supabase
 [-] Load using ml files parsers, or just include tensorflow.js 
-[-] Function representation in model representation for activation functions 
+[*] Function representation in model representation for activation functions 
 [-] save in ml based formats
 [-] pip library for this representational ai using some gradio af interface, hosted locally or something
-
+[-] Create Segregation dropdowns, as in all, layers, activation, etc
+[-] sequential data
 ### Features list 
 1. 2d view
 2. 3d view 
