@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Github, Menu, X } from "lucide-react";
+import { Github, Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -50,12 +59,42 @@ export const Navbar = () => {
             </div>
           </div>
 
-          {/* GitHub Button */}
-          <div className="hidden md:block">
-            <Button variant="outline" size="sm" className="border-border/50 hover:bg-muted/50">
-              <Github className="h-4 w-4 mr-2" />
-              GitHub
-            </Button>
+          {/* Auth & GitHub Buttons */}
+          <div className="hidden md:flex items-center space-x-3">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
+                    <User className="h-4 w-4 mr-2" />
+                    {user.email}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="neural-card border-primary/20">
+                  <DropdownMenuItem disabled className="text-muted-foreground">
+                    {user.email}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut} className="text-destructive focus:text-destructive">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/auth">
+                <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
+                  <User className="h-4 w-4 mr-2" />
+                  Sign In
+                </Button>
+              </Link>
+            )}
+            
+            <a href="https://github.com/AnomitraSarkar/brain-flow-builder" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="sm" className="border-border/50 hover:bg-muted/50">
+                <Github className="h-4 w-4 mr-2" />
+                GitHub
+              </Button>
+            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -88,11 +127,36 @@ export const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
-              <div className="px-3 pt-2">
-                <Button variant="outline" size="sm" className="w-full border-border/50">
-                  <Github className="h-4 w-4 mr-2" />
-                  GitHub
-                </Button>
+              <div className="px-3 pt-2 space-y-2">
+                {user ? (
+                  <div className="space-y-2">
+                    <div className="text-sm text-muted-foreground px-3 py-2">
+                      {user.email}
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full border-destructive/50 text-destructive hover:bg-destructive/10"
+                      onClick={signOut}
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <Link to="/auth" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full border-border/50">
+                      <User className="h-4 w-4 mr-2" />
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
+                <a href="https://github.com/AnomitraSarkar/brain-flow-builder" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="sm" className="w-full border-border/50">
+                    <Github className="h-4 w-4 mr-2" />
+                    GitHub
+                  </Button>
+                </a>
               </div>
             </div>
           </div>
