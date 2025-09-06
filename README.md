@@ -71,6 +71,13 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### Current requirement
+-Explore tab: so we need to know who created the model
+-To download model we need to sign up
+-Add the current functionalities that are not mentioned in the Docs parts add them to the docs
+-explore models should also have a search bar for search
+
+understand and analyse the changes before implementing them, do not change any current functionality
 
 ## Todo:
 
