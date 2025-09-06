@@ -14,6 +14,9 @@ import {
   Zap
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNeuralModels } from "@/hooks/useNeuralModels";
+import { SaveModelDialog } from "./SaveModelDialog";
 
 interface PlaygroundToolbarProps {
   viewMode: '2d' | '3d';
@@ -29,6 +32,9 @@ export const PlaygroundToolbar = ({
   onLayersChange
 }: PlaygroundToolbarProps) => {
   const [isTraining, setIsTraining] = useState(false);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const { user } = useAuth();
+  const { saveModel } = useNeuralModels();
 
   const exportNetwork = () => {
     const networkData = {
@@ -86,6 +92,20 @@ export const PlaygroundToolbar = ({
       params: { input_shape: [28, 28, 1] },
       connections: []
     }]);
+  };
+
+  const handleSave = () => {
+    if (!user) {
+      // Redirect to auth page
+      window.location.href = '/auth';
+      return;
+    }
+    setShowSaveDialog(true);
+  };
+
+  const handleSaveModel = async (name: string, description?: string, isPublic?: boolean) => {
+    await saveModel(name, layers, description, isPublic);
+    setShowSaveDialog(false);
   };
 
   return (
@@ -160,11 +180,18 @@ export const PlaygroundToolbar = ({
           variant="default"
           size="sm"
           className="neural-button-hero"
+          onClick={handleSave}
         >
           <Save className="w-4 h-4 mr-2" />
           Save
         </Button>
       </div>
+
+      <SaveModelDialog
+        open={showSaveDialog}
+        onOpenChange={setShowSaveDialog}
+        onSave={handleSaveModel}
+      />
     </div>
   );
 };

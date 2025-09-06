@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { LayerToolbox } from "./LayerToolbox";
 import { NetworkCanvas } from "./NetworkCanvas";
@@ -19,6 +19,20 @@ export const PlaygroundWorkspace = () => {
       connections: []
     }
   ]);
+
+  // Check for model to load from localStorage (from dashboard/explore)
+  useEffect(() => {
+    const loadModelData = localStorage.getItem('loadModel');
+    if (loadModelData) {
+      try {
+        const loadedLayers = JSON.parse(loadModelData);
+        setLayers(loadedLayers);
+        localStorage.removeItem('loadModel'); // Clear after loading
+      } catch (error) {
+        console.error('Failed to load model:', error);
+      }
+    }
+  }, []);
   const [selectedLayer, setSelectedLayer] = useState<LayerConfig | null>(null);
   const [viewMode, setViewMode] = useState<'2d' | '3d'>('2d');
   const [showInspector, setShowInspector] = useState(true);

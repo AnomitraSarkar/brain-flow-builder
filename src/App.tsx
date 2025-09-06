@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Docs from "./pages/Docs";
 import Playground from "./pages/Playground";
 import Explore from "./pages/Explore";
+import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +30,7 @@ const App = () => (
               <Route path="docs" element={<Docs />} />
               <Route path="playground" element={<Playground />} />
               <Route path="explore" element={<Explore />} />
+              <Route path="dashboard" element={<Dashboard />} />
             </Route>
             <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

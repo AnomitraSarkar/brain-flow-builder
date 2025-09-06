@@ -21,6 +21,7 @@ export const Navbar = () => {
     { name: "Docs", href: "/docs" },
     { name: "Playground", href: "/playground" },
     { name: "Explore", href: "/explore" },
+    ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : []),
     { name: "About", href: "/about" },
   ];
 
