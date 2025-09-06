@@ -31,7 +31,7 @@ const Dashboard = () => {
     if (user) {
       fetchUserModels();
     }
-  }, [user, fetchUserModels]);
+  }, [user]);
 
   const handleEdit = (model: NeuralModel) => {
     setEditingModel(model);

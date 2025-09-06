@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { LayerConfig } from '@/types/neural-network';
@@ -21,9 +21,8 @@ export const useNeuralModels = () => {
   const [publicModels, setPublicModels] = useState<NeuralModel[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchUserModels = async () => {
+  const fetchUserModels = useCallback(async () => {
     if (!user) return;
-    
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -31,7 +30,6 @@ export const useNeuralModels = () => {
         .select('*')
         .eq('user_id', user.id)
         .order('updated_at', { ascending: false });
-      
       if (error) throw error;
       setUserModels((data as NeuralModel[]) || []);
     } catch (error) {
@@ -40,9 +38,9 @@ export const useNeuralModels = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
-  const fetchPublicModels = async () => {
+  const fetchPublicModels = useCallback(async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -51,7 +49,6 @@ export const useNeuralModels = () => {
         .eq('is_public', true)
         .order('created_at', { ascending: false })
         .limit(50);
-      
       if (error) throw error;
       setPublicModels((data as NeuralModel[]) || []);
     } catch (error) {
@@ -60,9 +57,9 @@ export const useNeuralModels = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const saveModel = async (
+  const saveModel = useCallback(async (
     name: string, 
     layers: LayerConfig[], 
     description?: string,
@@ -87,7 +84,6 @@ export const useNeuralModels = () => {
         .single();
 
       if (error) throw error;
-      
       toast.success('Model saved successfully!');
       await fetchUserModels();
       return data;
@@ -96,9 +92,9 @@ export const useNeuralModels = () => {
       toast.error('Failed to save model');
       return null;
     }
-  };
+  }, [user, fetchUserModels]);
 
-  const updateModel = async (
+  const updateModel = useCallback(async (
     id: string,
     updates: any
   ) => {
@@ -117,7 +113,6 @@ export const useNeuralModels = () => {
         .single();
 
       if (error) throw error;
-      
       toast.success('Model updated successfully!');
       await fetchUserModels();
       return data;
@@ -126,9 +121,9 @@ export const useNeuralModels = () => {
       toast.error('Failed to update model');
       return null;
     }
-  };
+  }, [user, fetchUserModels]);
 
-  const deleteModel = async (id: string) => {
+  const deleteModel = useCallback(async (id: string) => {
     if (!user) {
       toast.error('Please sign in to delete models');
       return false;
@@ -142,7 +137,6 @@ export const useNeuralModels = () => {
         .eq('user_id', user.id);
 
       if (error) throw error;
-      
       toast.success('Model deleted successfully!');
       await fetchUserModels();
       return true;
@@ -151,13 +145,13 @@ export const useNeuralModels = () => {
       toast.error('Failed to delete model');
       return false;
     }
-  };
+  }, [user, fetchUserModels]);
 
   useEffect(() => {
     if (user) {
       fetchUserModels();
     }
-  }, [user]);
+  }, [user, fetchUserModels]);
 
   return {
     userModels,
