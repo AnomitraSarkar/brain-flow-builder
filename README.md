@@ -1,113 +1,59 @@
-# Welcome to your Lovable project
+# OpenNetwork
 
-## Project info
+## Project Overview
 
-**URL**: https://lovable.dev/projects/b63f3bb9-90df-44f2-ac44-3b83c49fd7b4
+The **Lovable Project** is part of the **OpenNetwork initiative** aimed at creating a collaborative environment for exploring, building, and sharing machine learning models. The platform enables users to visualize architectures in both **2D and 3D**, manage model parameters, and interact with advanced model customization features.
 
-## How can I edit this code?
+Live Deployment: [OpenSparrow](https://opensparrow.netlify.app)
+Project Workspace: [Lovable.dev Project](https://lovable.dev/projects/b63f3bb9-90df-44f2-ac44-3b83c49fd7b4)
 
-There are several ways of editing your application.
+**Developer**: Anomitra Sarkar
+**Organization**: Dezors Pvt Ltd.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b63f3bb9-90df-44f2-ac44-3b83c49fd7b4) and start prompting.
+## Current Requirements
 
-Changes made via Lovable will be committed automatically to this repo.
+* **Explore Tab**: Include attribution to show who created each model.
+* **Model Downloads**: Restrict downloads to signed-up users.
+* **Documentation Updates**: Add undocumented current functionalities to the Docs.
+* **Search in Explore Models**: Implement a search bar to browse models.
 
-**Use your preferred IDE**
+All new requirements should be added **without altering existing functionality**.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Todo
 
-Follow these steps:
+* \[\*] Setup Save settings using Firebase or authentication using Supabase
+* \[-] Load using ML file parsers, or include TensorFlow\.js
+* \[\*] Function representation in model representation for activation functions
+* \[-] Save in ML-based formats
+* \[-] Build a pip library for representational AI with a Gradio-based interface, hosted locally
+* \[\*] Create segregation dropdowns (e.g., All, Layers, Activations, etc.)
+* \[-] Sequential data integration in training
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Features
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/b63f3bb9-90df-44f2-ac44-3b83c49fd7b4) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
-### Current requirement
--Explore tab: so we need to know who created the model
--To download model we need to sign up
--Add the current functionalities that are not mentioned in the Docs parts add them to the docs
--explore models should also have a search bar for search
-
-understand and analyse the changes before implementing them, do not change any current functionality
-
-## Todo:
-
-[-] Setup Save settings using firebase or auth using supabase
-[-] Load using ml files parsers, or just include tensorflow.js
-[*] Function representation in model representation for activation functions
-[-] save in ml based formats
-[-] pip library for this representational ai using some gradio af interface, hosted locally or something
-[-] Create Segregation dropdowns, as in all, layers, activation, etc
-[-] sequential data
-
-### Features list
-
-1. 2d view
-2. 3d view
-3. weight visualization: Xavier Initialization
-4. Model creation (all the base layers and activation functions)
-5.
-6. Architectural Overview
-7. Load file in Json
-8. Save file in Json
-9. Load/Save in different MLops formats
-10. OAuth for local storage and overview
-11. Quick Architectures
-12. Weight Distribution by Layer Historgram
-13. '' - '' Functions
-14. activation Repr
-15. Layer Inspector menu for customization
-16. Trainable params setups
-17. Params count up
-18. Customization Fully available
-19. Hostable pip library to make it work with python dynamically
-20. Documentation + pypi api docmentation too
+1. **2D View** – Flat visualization of network architectures
+2. **3D View** – Interactive three-dimensional exploration of models
+3. **Weight Visualization** – Xavier initialization with graphical output
+4. **Model Creation** – Support for core layers and activation functions
+5. **Ensemble Support** – Repository for combined model structures in Explore tab
+6. **Architectural Overview** – High-level schematic of model design
+7. **Load JSON** – Import model definitions via JSON format
+8. **Save JSON** – Export models into JSON format
+9. **Load/Save in MLops Formats** – Planned support for broader ML file standards
+10. **OAuth for Local Storage** – Secure login and storage for model management
+11. **Quick Architectures** – Prebuilt templates for fast prototyping
+12. **Weight Distribution Histogram** – Layer-wise parameter statistics
+13. **Function Blocks** – Modular function representation
+14. **Activation Representation** – Clear visualization of activation functions
+15. **Layer Inspector** – Customization menu for layer-specific adjustments
+16. **Trainable Parameters Setup** – Flexible parameter tuning
+17. **Parameter Count Up** – Automatic parameter tracking
+18. **Full Customization** – End-to-end editable architectures
+19. **Hostable pip Library** – Python integration to dynamically use the platform
+20. **Documentation + PyPI API Docs** – Structured technical documentation for developers
