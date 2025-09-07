@@ -13,9 +13,11 @@ Project Workspace: [Lovable.dev Project](https://lovable.dev/projects/b63f3bb9-9
 ---
 
 ## Current Requirements
- 
-### Primary
-* Add another view in the playground, called Ensemble, in which i am able to see three-dimensional low level representation of the Neural Network, from nodes to all intern node connections, be very careful about this. for example let the dense neural network's nodes be small spheres and each connection be lines, use R3F or ThreeJs if required. for convolutional network show the 2D convolution rectangular representation, so for like dense neural network of 10 neurons, i should 10 small sphere each of them connecting to the other dense layer in front of it.
+
+### Primary Error
+* Coherency with the 2d/3d View
+* On Training, Weights and bias not changing that much, make it a random change for per 5s,
+* Convolutional Layer not accurate <Better Description to be provided>
 
 
 ### Secondary
