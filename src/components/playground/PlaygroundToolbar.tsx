@@ -19,8 +19,8 @@ import { useNeuralModels } from "@/hooks/useNeuralModels";
 import { SaveModelDialog } from "./SaveModelDialog";
 
 interface PlaygroundToolbarProps {
-  viewMode: '2d' | '3d';
-  onViewModeChange: (mode: '2d' | '3d') => void;
+  viewMode: '2d' | '3d' | 'ensemble';
+  onViewModeChange: (mode: '2d' | '3d' | 'ensemble') => void;
   layers: LayerConfig[];
   onLayersChange: (layers: LayerConfig[]) => void;
 }
@@ -130,6 +130,15 @@ export const PlaygroundToolbar = ({
           >
             <Eye className="w-4 h-4 mr-2" />
             3D
+          </Button>
+          <Button
+            variant={viewMode === 'ensemble' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => onViewModeChange('ensemble')}
+            className="h-8"
+          >
+            <Zap className="w-4 h-4 mr-2" />
+            Ensemble
           </Button>
         </div>
       </div>

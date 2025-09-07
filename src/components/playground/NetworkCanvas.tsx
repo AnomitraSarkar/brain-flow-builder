@@ -15,6 +15,7 @@ import '@xyflow/react/dist/style.css';
 import { LayerConfig } from "@/types/neural-network";
 import { NetworkNode } from "./NetworkNode";
 import { Network3D } from "./Network3D";
+import { EnsembleView } from "./EnsembleView";
 
 interface NetworkCanvasProps {
   layers: LayerConfig[];
@@ -22,7 +23,7 @@ interface NetworkCanvasProps {
   selectedLayer: LayerConfig | null;
   onLayerSelect: (layer: LayerConfig | null) => void;
   onLayerDelete: (layerId: string) => void;
-  viewMode: '2d' | '3d';
+  viewMode: '2d' | '3d' | 'ensemble';
 }
 
 const nodeTypes = {
@@ -134,6 +135,18 @@ export const NetworkCanvas = ({
     return (
       <div className="w-full h-full">
         <Network3D 
+          layers={layers}
+          selectedLayer={selectedLayer}
+          onLayerSelect={onLayerSelect}
+        />
+      </div>
+    );
+  }
+
+  if (viewMode === 'ensemble') {
+    return (
+      <div className="w-full h-full">
+        <EnsembleView 
           layers={layers}
           selectedLayer={selectedLayer}
           onLayerSelect={onLayerSelect}

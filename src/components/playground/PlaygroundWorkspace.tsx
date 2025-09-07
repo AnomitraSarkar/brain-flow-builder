@@ -34,7 +34,7 @@ export const PlaygroundWorkspace = () => {
     }
   }, []);
   const [selectedLayer, setSelectedLayer] = useState<LayerConfig | null>(null);
-  const [viewMode, setViewMode] = useState<'2d' | '3d'>('2d');
+  const [viewMode, setViewMode] = useState<'2d' | '3d' | 'ensemble'>('2d');
   const [showInspector, setShowInspector] = useState(true);
   const [showMetrics, setShowMetrics] = useState(true);
 
