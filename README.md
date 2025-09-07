@@ -32,6 +32,8 @@ All new requirements should be added **without altering existing functionality**
 * \[-] Build a pip library for representational AI with a Gradio-based interface, hosted locally
 * \[\*] Create segregation dropdowns (e.g., All, Layers, Activations, etc.)
 * \[-] Sequential data integration in training
+* \[-] Scroll bar fixation 
+* \[-] Design bar fixation
 
 ---
 
