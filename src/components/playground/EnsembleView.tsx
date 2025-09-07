@@ -1,6 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Sphere, Line, Box } from '@react-three/drei';
+import { OrbitControls, Text, Sphere, Line, Box, Plane } from '@react-three/drei';
 import { LayerConfig } from '@/types/neural-network';
 import * as THREE from 'three';
 
@@ -8,6 +8,7 @@ interface EnsembleViewProps {
   layers: LayerConfig[];
   selectedLayer: LayerConfig | null;
   onLayerSelect: (layer: LayerConfig | null) => void;
+  isTraining?: boolean;
 }
 
 const DenseLayerNode = ({ 
@@ -15,13 +16,15 @@ const DenseLayerNode = ({
   size, 
   color, 
   isSelected,
-  onClick 
+  onClick,
+  bias = 0
 }: { 
   position: [number, number, number]; 
   size: number;
   color: string;
   isSelected: boolean;
   onClick: () => void;
+  bias?: number;
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   
@@ -31,19 +34,32 @@ const DenseLayerNode = ({
     }
   });
 
+  // Color based on bias value
+  const nodeColor = useMemo(() => {
+    if (bias === 0) return color;
+    const intensity = Math.min(Math.abs(bias), 1);
+    if (bias > 0) {
+      // Positive bias: brighter/warmer
+      return `hsl(200, 70%, ${50 + intensity * 30}%)`;
+    } else {
+      // Negative bias: darker/cooler
+      return `hsl(200, 70%, ${50 - intensity * 30}%)`;
+    }
+  }, [bias, color]);
+
   return (
     <Sphere 
       ref={meshRef}
       position={position}
-      args={[size, 16, 16]}
+      args={[size + Math.abs(bias) * 0.05, 16, 16]}
       scale={isSelected ? 1.3 : 1}
       onClick={onClick}
     >
       <meshStandardMaterial 
-        color={color}
+        color={nodeColor}
         transparent
-        opacity={0.8}
-        emissive={isSelected ? color : '#000000'}
+        opacity={0.8 + Math.abs(bias) * 0.1}
+        emissive={isSelected ? nodeColor : '#000000'}
         emissiveIntensity={isSelected ? 0.3 : 0}
       />
     </Sphere>
@@ -94,23 +110,40 @@ const ConvLayerNode = ({
 const NodeConnection = ({ 
   start, 
   end,
+  weight = 0,
   color = "#8B5CF6",
   opacity = 0.4
 }: { 
   start: [number, number, number]; 
   end: [number, number, number];
+  weight?: number;
   color?: string;
   opacity?: number;
 }) => {
   const points = [new THREE.Vector3(...start), new THREE.Vector3(...end)];
   
+  // Color based on weight magnitude and sign
+  const weightColor = useMemo(() => {
+    if (weight === 0) return color;
+    const intensity = Math.min(Math.abs(weight), 1);
+    if (weight > 0) {
+      // Positive weights: blue to cyan
+      return `hsl(${180 + intensity * 60}, 70%, ${50 + intensity * 30}%)`;
+    } else {
+      // Negative weights: red to orange
+      return `hsl(${0 + intensity * 30}, 70%, ${50 + intensity * 30}%)`;
+    }
+  }, [weight, color]);
+  
+  const lineWidth = Math.max(0.5, Math.abs(weight) * 3);
+  
   return (
     <Line
       points={points}
-      color={color}
-      lineWidth={1}
+      color={weightColor}
+      lineWidth={lineWidth}
       transparent
-      opacity={opacity}
+      opacity={opacity + Math.abs(weight) * 0.3}
     />
   );
 };
@@ -120,13 +153,15 @@ const DenseLayer3D = ({
   layerIndex,
   isSelected,
   onClick,
-  nextLayer
+  nextLayer,
+  layers
 }: {
   layer: LayerConfig;
   layerIndex: number;
   isSelected: boolean;
   onClick: () => void;
   nextLayer?: LayerConfig;
+  layers: LayerConfig[];
 }) => {
   const units = layer.params?.units || 1;
   const baseX = layerIndex * 4;
@@ -141,6 +176,7 @@ const DenseLayer3D = ({
   
   // Create nodes for this layer
   for (let i = 0; i < units; i++) {
+    const bias = layer.biases?.[i] || 0;
     const nodePosition: [number, number, number] = [
       baseX, 
       startY + i * spacing, 
@@ -155,28 +191,49 @@ const DenseLayer3D = ({
         color="#06B6D4"
         isSelected={isSelected}
         onClick={onClick}
+        bias={bias}
       />
     );
     
-    // Create connections to next layer if it exists and is dense
-    if (nextLayer && nextLayer.type === 'dense') {
-      const nextUnits = nextLayer.params?.units || 1;
-      const nextBaseX = (layerIndex + 1) * 4;
-      const nextStartY = -(nextUnits - 1) * spacing / 2;
-      
-      for (let j = 0; j < nextUnits; j++) {
-        const nextNodePosition: [number, number, number] = [
-          nextBaseX,
-          nextStartY + j * spacing,
-          0
-        ];
+    // Create connections to next layer if it exists
+    if (nextLayer && (nextLayer.type === 'dense' || nextLayer.type === 'conv2d' || nextLayer.type === 'maxpool' || nextLayer.type === 'avgpool')) {
+      if (nextLayer.type === 'dense') {
+        const nextUnits = nextLayer.params?.units || 1;
+        const nextBaseX = (layerIndex + 1) * 4;
+        const nextStartY = -(nextUnits - 1) * spacing / 2;
+        
+        for (let j = 0; j < nextUnits; j++) {
+          const nextNodePosition: [number, number, number] = [
+            nextBaseX,
+            nextStartY + j * spacing,
+            0
+          ];
+          
+          // Get weight value for connection coloring
+          const weight = layer.weights?.[i]?.[j] || Math.random() * 0.2 - 0.1;
+          
+          connections.push(
+            <NodeConnection
+              key={`${layer.id}-${i}-to-${nextLayer.id}-${j}`}
+              start={nodePosition}
+              end={nextNodePosition}
+              weight={weight}
+              opacity={0.4}
+            />
+          );
+        }
+      } else {
+        // Connect to conv/pooling layer center
+        const nextBaseX = (layerIndex + 1) * 4;
+        const nextNodePosition: [number, number, number] = [nextBaseX, 0, 0];
         
         connections.push(
           <NodeConnection
-            key={`${layer.id}-${i}-to-${nextLayer.id}-${j}`}
+            key={`${layer.id}-${i}-to-${nextLayer.id}`}
             start={nodePosition}
             end={nextNodePosition}
-            opacity={0.2}
+            weight={Math.random() * 0.2 - 0.1}
+            opacity={0.3}
           />
         );
       }
@@ -200,6 +257,60 @@ const DenseLayer3D = ({
   );
 };
 
+const ConvFilter3D = ({ 
+  position, 
+  kernelSize, 
+  isSelected, 
+  onClick,
+  bias = 0
+}: { 
+  position: [number, number, number]; 
+  kernelSize: [number, number];
+  isSelected: boolean;
+  onClick: () => void;
+  bias?: number;
+}) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (meshRef.current && isSelected) {
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
+    }
+  });
+
+  const filterColor = useMemo(() => {
+    if (bias === 0) return "#10B981";
+    const intensity = Math.min(Math.abs(bias), 1);
+    if (bias > 0) {
+      return `hsl(150, 70%, ${50 + intensity * 25}%)`;
+    } else {
+      return `hsl(150, 70%, ${50 - intensity * 25}%)`;
+    }
+  }, [bias]);
+
+  const width = kernelSize[0] * 0.08;
+  const height = kernelSize[1] * 0.08;
+  const depth = 0.03;
+
+  return (
+    <Box 
+      ref={meshRef}
+      position={position}
+      args={[width, height, depth]}
+      scale={isSelected ? 1.2 : 1}
+      onClick={onClick}
+    >
+      <meshStandardMaterial 
+        color={filterColor}
+        transparent
+        opacity={0.7 + Math.abs(bias) * 0.2}
+        emissive={isSelected ? filterColor : '#000000'}
+        emissiveIntensity={isSelected ? 0.2 : 0}
+      />
+    </Box>
+  );
+};
+
 const ConvLayer3D = ({
   layer,
   layerIndex,
@@ -215,42 +326,73 @@ const ConvLayer3D = ({
   const kernelSize = layer.params?.kernel_size || [3, 3];
   const baseX = layerIndex * 4;
   
-  // Create feature maps representation
-  const mapWidth = kernelSize[0] * 0.1;
-  const mapHeight = kernelSize[1] * 0.1;
-  const mapDepth = 0.05;
+  // Create 3D representation of convolution operation
+  const inputPlane = (
+    <Plane
+      position={[baseX - 1, 0, 0]}
+      args={[1.5, 1.5]}
+      rotation={[0, Math.PI / 6, 0]}
+    >
+      <meshStandardMaterial 
+        color="#8B5CF6" 
+        transparent 
+        opacity={0.3}
+        side={THREE.DoubleSide}
+      />
+    </Plane>
+  );
+
+  const featureViz = [];
+  const spacing = 0.15;
+  const maxDisplay = Math.min(filters, 9); // 3x3 grid
+  const gridSize = Math.ceil(Math.sqrt(maxDisplay));
   
-  const featureMaps = [];
-  const spacing = 0.2;
-  const mapsPerRow = Math.ceil(Math.sqrt(filters));
-  
-  for (let i = 0; i < Math.min(filters, 16); i++) { // Limit display for performance
-    const row = Math.floor(i / mapsPerRow);
-    const col = i % mapsPerRow;
+  for (let i = 0; i < maxDisplay; i++) {
+    const row = Math.floor(i / gridSize);
+    const col = i % gridSize;
+    const bias = layer.biases?.[i] || 0;
     
     const position: [number, number, number] = [
-      baseX + col * spacing,
-      row * spacing - (mapsPerRow * spacing) / 2,
-      0
+      baseX + col * spacing - (gridSize * spacing) / 2,
+      row * spacing - (gridSize * spacing) / 2,
+      0.5
     ];
     
-    featureMaps.push(
-      <ConvLayerNode
+    featureViz.push(
+      <ConvFilter3D
         key={`${layer.id}-filter-${i}`}
         position={position}
-        dimensions={[mapWidth, mapHeight, mapDepth]}
-        color="#10B981"
+        kernelSize={kernelSize}
         isSelected={isSelected}
         onClick={onClick}
+        bias={bias}
       />
     );
   }
+
+  // Feature map outputs
+  const outputPlane = (
+    <Plane
+      position={[baseX + 1, 0, 0]}
+      args={[1.2, 1.2]}
+      rotation={[0, -Math.PI / 6, 0]}
+    >
+      <meshStandardMaterial 
+        color="#10B981" 
+        transparent 
+        opacity={0.4}
+        side={THREE.DoubleSide}
+      />
+    </Plane>
+  );
   
   return (
     <group>
-      {featureMaps}
+      {inputPlane}
+      {featureViz}
+      {outputPlane}
       <Text
-        position={[baseX, -(mapsPerRow * spacing) / 2 - 0.5, 0]}
+        position={[baseX, -1.2, 0]}
         fontSize={0.15}
         color="white"
         anchorX="center"
@@ -266,12 +408,16 @@ const InputLayer3D = ({
   layer,
   layerIndex,
   isSelected,
-  onClick
+  onClick,
+  nextLayer,
+  layers
 }: {
   layer: LayerConfig;
   layerIndex: number;
   isSelected: boolean;
   onClick: () => void;
+  nextLayer?: LayerConfig;
+  layers: LayerConfig[];
 }) => {
   const inputShape = layer.params?.input_shape || [28, 28, 1];
   const baseX = layerIndex * 4;
@@ -280,6 +426,48 @@ const InputLayer3D = ({
   const width = Math.min(inputShape[0], 10) * 0.02;
   const height = Math.min(inputShape[1], 10) * 0.02;
   const depth = inputShape[2] * 0.05;
+  
+  const connections = [];
+  
+  // Create connections to next layer
+  if (nextLayer) {
+    const nextBaseX = (layerIndex + 1) * 4;
+    
+    if (nextLayer.type === 'dense') {
+      const nextUnits = nextLayer.params?.units || 1;
+      const spacing = 0.3;
+      const nextStartY = -(nextUnits - 1) * spacing / 2;
+      
+      for (let j = 0; j < nextUnits; j++) {
+        const nextNodePosition: [number, number, number] = [
+          nextBaseX,
+          nextStartY + j * spacing,
+          0
+        ];
+        
+        connections.push(
+          <NodeConnection
+            key={`${layer.id}-to-${nextLayer.id}-${j}`}
+            start={[baseX, 0, 0]}
+            end={nextNodePosition}
+            weight={Math.random() * 0.2 - 0.1}
+            opacity={0.3}
+          />
+        );
+      }
+    } else {
+      // Connect to conv/pooling layer center
+      connections.push(
+        <NodeConnection
+          key={`${layer.id}-to-${nextLayer.id}`}
+          start={[baseX, 0, 0]}
+          end={[nextBaseX, 0, 0]}
+          weight={Math.random() * 0.2 - 0.1}
+          opacity={0.3}
+        />
+      );
+    }
+  }
   
   return (
     <group>
@@ -290,6 +478,7 @@ const InputLayer3D = ({
         isSelected={isSelected}
         onClick={onClick}
       />
+      {connections}
       <Text
         position={[baseX, -0.8, 0]}
         fontSize={0.15}
@@ -345,7 +534,7 @@ const PoolingLayer3D = ({
   );
 };
 
-export const EnsembleView = ({ layers, selectedLayer, onLayerSelect }: EnsembleViewProps) => {
+export const EnsembleView = ({ layers, selectedLayer, onLayerSelect, isTraining = false }: EnsembleViewProps) => {
   const renderLayer = (layer: LayerConfig, index: number) => {
     const isSelected = selectedLayer?.id === layer.id;
     const onClick = () => onLayerSelect(layer);
@@ -360,6 +549,8 @@ export const EnsembleView = ({ layers, selectedLayer, onLayerSelect }: EnsembleV
             layerIndex={index}
             isSelected={isSelected}
             onClick={onClick}
+            nextLayer={nextLayer}
+            layers={layers}
           />
         );
       case 'dense':
@@ -371,6 +562,7 @@ export const EnsembleView = ({ layers, selectedLayer, onLayerSelect }: EnsembleV
             isSelected={isSelected}
             onClick={onClick}
             nextLayer={nextLayer}
+            layers={layers}
           />
         );
       case 'conv2d':
@@ -431,17 +623,20 @@ export const EnsembleView = ({ layers, selectedLayer, onLayerSelect }: EnsembleV
       
       {/* Controls Overlay */}
       <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur-lg rounded-lg p-4 border border-border/50">
-        <div className="text-sm font-medium text-foreground mb-2">Ensemble View</div>
+        <div className="text-sm font-medium text-foreground mb-2">
+          Ensemble View {isTraining && <span className="text-amber-400">(Training)</span>}
+        </div>
         <div className="text-xs text-muted-foreground space-y-1">
           <div>• <span className="text-purple-400">Purple:</span> Input layers</div>
-          <div>• <span className="text-cyan-400">Cyan:</span> Dense layers</div>
-          <div>• <span className="text-green-400">Green:</span> Convolutional layers</div>
+          <div>• <span className="text-cyan-400">Cyan:</span> Dense nodes (size ∝ bias)</div>
+          <div>• <span className="text-green-400">Green:</span> Conv filters</div>
           <div>• <span className="text-amber-400">Amber:</span> Max pooling</div>
           <div>• <span className="text-red-400">Red:</span> Average pooling</div>
           <div className="mt-2 pt-2 border-t border-border/30">
-            <div>• Drag to rotate view</div>
-            <div>• Scroll to zoom</div>
-            <div>• Click nodes to select</div>
+            <div>• <span className="text-blue-400">Blue lines:</span> Positive weights</div>
+            <div>• <span className="text-red-400">Red lines:</span> Negative weights</div>
+            <div>• Line thickness ∝ weight magnitude</div>
+            <div className="mt-1">• Drag to rotate • Scroll to zoom</div>
           </div>
         </div>
       </div>
