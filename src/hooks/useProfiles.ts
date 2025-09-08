@@ -21,22 +21,21 @@ export const useProfiles = () => {
     if (profiles[userId]) return profiles[userId];
 
     try {
-      const { data, error } = await supabase
+      // First try to get profile
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', userId)
         .single();
 
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching profile:', error);
-        return null;
+      if (profile && !profileError) {
+        setProfiles(prev => ({ ...prev, [userId]: profile }));
+        return profile;
       }
 
-      if (data) {
-        setProfiles(prev => ({ ...prev, [userId]: data }));
-        return data;
-      }
-
+      // If no profile found, create a basic one with email
+      // For now, we'll return null and let the calling code handle it
+      // The actual user email fetching would need admin access
       return null;
     } catch (error) {
       console.error('Error fetching profile:', error);

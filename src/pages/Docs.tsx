@@ -109,7 +109,7 @@ const Docs = () => {
           {/* Model Management */}
           <div className="mb-12">
             <h3 className="text-2xl font-semibold mb-6 text-primary">
-              📁 Model Management
+              Model Management
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="neural-card border border-primary/20">
@@ -156,7 +156,7 @@ const Docs = () => {
           {/* Layer System */}
           <div className="mb-12">
             <h3 className="text-2xl font-semibold mb-6 text-primary">
-              🧠 Layer System
+              Layer System
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="neural-card border border-primary/20">
@@ -203,7 +203,7 @@ const Docs = () => {
           {/* Visualization Modes */}
           <div className="mb-12">
             <h3 className="text-2xl font-semibold mb-6 text-secondary">
-              🎨 Visualization Modes
+              Visualization Modes
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="neural-card">
@@ -249,7 +249,7 @@ const Docs = () => {
           {/* Analysis Tools */}
           <div className="mb-12">
             <h3 className="text-2xl font-semibold mb-6 text-accent">
-              📊 Analysis Tools
+              Analysis Tools
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="neural-card">
@@ -289,7 +289,7 @@ const Docs = () => {
           {/* Import/Export */}
           <div className="mb-8">
             <h3 className="text-2xl font-semibold mb-6">
-              💾 Import/Export System
+              Import/Export System
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="neural-card">

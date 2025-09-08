@@ -27,8 +27,8 @@ const About = () => {
         {/* Values */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           <div className="text-center neural-card">
-            <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-lg mx-auto mb-4 flex items-center justify-center">
-              <Heart className="w-6 h-6 text-primary-foreground" />
+            <div className="w-12 h-12 bg-primary text-primary-foreground rounded-lg mx-auto mb-4 flex items-center justify-center">
+              <Heart className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-semibold mb-2">Open Source</h3>
             <p className="text-muted-foreground">
@@ -37,8 +37,8 @@ const About = () => {
           </div>
           
           <div className="text-center neural-card">
-            <div className="w-12 h-12 bg-gradient-to-r from-accent to-secondary rounded-lg mx-auto mb-4 flex items-center justify-center">
-              <Code className="w-6 h-6 text-primary-foreground" />
+            <div className="w-12 h-12 bg-secondary text-secondary-foreground rounded-lg mx-auto mb-4 flex items-center justify-center">
+              <Code className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-semibold mb-2">Innovation</h3>
             <p className="text-muted-foreground">
@@ -47,8 +47,8 @@ const About = () => {
           </div>
           
           <div className="text-center neural-card">
-            <div className="w-12 h-12 bg-gradient-to-r from-secondary to-primary rounded-lg mx-auto mb-4 flex items-center justify-center">
-              <Users className="w-6 h-6 text-primary-foreground" />
+            <div className="w-12 h-12 bg-accent text-accent-foreground rounded-lg mx-auto mb-4 flex items-center justify-center">
+              <Users className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-semibold mb-2">Community</h3>
             <p className="text-muted-foreground">

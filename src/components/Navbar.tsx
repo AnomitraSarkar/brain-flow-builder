@@ -83,7 +83,7 @@ export const Navbar = () => {
               </DropdownMenu>
             ) : (
               <Link to="/auth">
-                <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
+                <Button variant="ghost" size="sm" className="text-foreground hover:text-foreground hover:bg-muted">
                   <User className="h-4 w-4 mr-2" />
                   Sign In
                 </Button>
@@ -91,7 +91,7 @@ export const Navbar = () => {
             )}
             
             <a href="https://github.com/AnomitraSarkar/brain-flow-builder" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="sm" className="border-border/50 hover:bg-muted/50">
+              <Button variant="outline" size="sm" className="border-border hover:bg-muted hover:text-foreground">
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
               </Button>

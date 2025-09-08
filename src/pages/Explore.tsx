@@ -29,6 +29,7 @@ const Explore = () => {
       for (const model of publicModels) {
         if (!modelCreators[model.user_id]) {
           const profile = await fetchProfile(model.user_id);
+          // For now show Anonymous User if no profile, could be enhanced to show email
           creators[model.user_id] = profile?.display_name || 'Anonymous User';
         }
       }
@@ -151,14 +152,14 @@ const Explore = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-muted-foreground mb-4">
-                    <div className="flex items-center gap-1 mb-1">
-                      <User className="w-3 h-3" />
-                      <span>By {modelCreators[model.user_id] || 'Loading...'}</span>
-                    </div>
-                    <p>Layers: {model.model_data.layers.length}</p>
-                    <p>Created: {new Date(model.created_at).toLocaleDateString()}</p>
-                  </div>
+                   <div className="text-sm mb-4">
+                     <div className="flex items-center gap-1 mb-1">
+                       <User className="w-3 h-3" />
+                       <span className="text-foreground font-medium">By {modelCreators[model.user_id] || 'Loading...'}</span>
+                     </div>
+                     <p className="text-muted-foreground">Layers: {model.model_data.layers.length}</p>
+                     <p className="text-muted-foreground">Created: {new Date(model.created_at).toLocaleDateString()}</p>
+                   </div>
                   
                   <div className="flex gap-2">
                     <Button
