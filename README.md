@@ -19,12 +19,12 @@ Project Workspace: [Lovable.dev Project](https://lovable.dev/projects/b63f3bb9-9
 
 
 ### Secondary
-* **Explore Tab**: Include attribution to show who created each model.
-* **Model Downloads**: Restrict downloads to signed-up users.
-* **Documentation Updates**: Add undocumented current functionalities to the Docs.
-* **Search in Explore Models**: Implement a search bar to browse models.
-
+* the entire design has to be black-backgroundish
+* no gradients in the entire website
+* the contrast need to be corrected (background - text) in the website
 All new requirements should be added **without altering existing functionality**.
+* profiles tab to create name, <sync with authentication>
+* the colors of neurons should be different based on the bias provided to it. therefore create a map of bias to color
 
 ---
 
