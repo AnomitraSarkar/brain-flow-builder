@@ -13,32 +13,36 @@ Project Workspace: [Lovable.dev Project](https://lovable.dev/projects/b63f3bb9-9
 ---
 
 ## Current Requirements
- 
-### Primary
-* Add another view in the playground, called Ensemble, in which i am able to see three-dimensional low level representation of the Neural Network, from nodes to all intern node connections, be very careful about this. for example let the dense neural network's nodes be small spheres and each connection be lines, use R3F or ThreeJs if required. for convolutional network show the 2D convolution rectangular representation, so for like dense neural network of 10 neurons, i should 10 small sphere each of them connecting to the other dense layer in front of it.
 
+### Primary
+
+- Add another view in the playground, called Ensemble, in which i am able to see three-dimensional low level representation of the Neural Network, from nodes to all intern node connections, be very careful about this. for example let the dense neural network's nodes be small spheres and each connection be lines, use R3F or ThreeJs if required. for convolutional network show the 2D convolution rectangular representation, so for like dense neural network of 10 neurons, i should 10 small sphere each of them connecting to the other dense layer in front of it.
 
 ### Secondary
-* the entire design has to be black-backgroundish
-* no gradients in the entire website
-* the contrast need to be corrected (background - text) in the website
-All new requirements should be added **without altering existing functionality**.
-* profiles tab to create name, <sync with authentication>
-* the colors of neurons should be different based on the bias provided to it. therefore create a map of bias to color
+
+- the entire design has to be black-backgroundish
+- no gradients in the entire website
+- i asked you change the background of the playground to grid, you didn't do it. do it again
+- the contrast need to be corrected (background - text) in the website
+  All new requirements should be added **without altering existing functionality**.
+- profiles tab to create name, <sync with authentication>
+- the colors of neurons should be different based on the bias provided to it. therefore create a map of bias to color
+- the image in the hero section needs to changed to something else which is more proffesional and sleek not the current one, change it or remove it.
 
 ---
 
 ## Todo
-* \[-] Include splash screen on startup and loadings, also make the design concurrent with the favico provided
-* \[\*] Setup Save settings using Firebase or authentication using Supabase
-* \[-] Load using ML file parsers, or include TensorFlow\.js
-* \[\*] Function representation in model representation for activation functions
-* \[-] Save in ML-based formats
-* \[-] Build a pip library for representational AI with a Gradio-based interface, hosted locally
-* \[\*] Create segregation dropdowns (e.g., All, Layers, Activations, etc.)
-* \[-] Sequential data integration in training
-* \[-] Scroll bar fixation 
-* \[-] Design bar fixation
+
+- \[-] Include splash screen on startup and loadings, also make the design concurrent with the favico provided
+- \[\*] Setup Save settings using Firebase or authentication using Supabase
+- \[-] Load using ML file parsers, or include TensorFlow\.js
+- \[\*] Function representation in model representation for activation functions
+- \[-] Save in ML-based formats
+- \[-] Build a pip library for representational AI with a Gradio-based interface, hosted locally
+- \[\*] Create segregation dropdowns (e.g., All, Layers, Activations, etc.)
+- \[-] Sequential data integration in training
+- \[-] Scroll bar fixation
+- \[-] Design bar fixation
 
 ---
 
