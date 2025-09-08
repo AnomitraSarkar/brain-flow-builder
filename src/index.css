@@ -6,59 +6,59 @@
 
 @layer base {
   :root {
-    /* Neural Network Color Palette */
-    --background: 222 84% 5%;
-    --foreground: 222 47% 95%;
+    /* Professional Monochrome Design System */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 8%;
     
-    --card: 222 47% 8%;
-    --card-foreground: 222 47% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
     
-    --popover: 222 47% 8%;
-    --popover-foreground: 222 47% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
     
-    /* Neural Network Primary - Electric Purple */
-    --primary: 270 100% 70%;
-    --primary-foreground: 222 84% 5%;
-    --primary-glow: 270 100% 80%;
+    /* Professional Primary - Clean Black */
+    --primary: 0 0% 8%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 0 0% 15%;
     
-    /* Secondary - Cyan Accent */
-    --secondary: 180 100% 70%;
-    --secondary-foreground: 222 84% 5%;
-    --secondary-glow: 180 100% 80%;
+    /* Secondary - Medium Gray */
+    --secondary: 0 0% 40%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-glow: 0 0% 50%;
     
-    /* Muted - Neural Gray */
-    --muted: 222 47% 12%;
-    --muted-foreground: 222 20% 65%;
+    /* Muted - Light Gray */
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 45%;
     
-    /* Accent - Neural Blue */
-    --accent: 240 100% 70%;
-    --accent-foreground: 222 84% 5%;
-    --accent-glow: 240 100% 80%;
+    /* Accent - Charcoal */
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 98%;
+    --accent-glow: 0 0% 30%;
     
-    --destructive: 0 75% 65%;
-    --destructive-foreground: 222 47% 95%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 98%;
     
-    --border: 222 47% 15%;
-    --input: 222 47% 12%;
-    --ring: 270 100% 70%;
+    --border: 0 0% 88%;
+    --input: 0 0% 96%;
+    --ring: 0 0% 8%;
     
-    --radius: 0.75rem;
+    --radius: 0.5rem;
     
-    /* Neural Network Gradients */
-    --gradient-neural: linear-gradient(135deg, hsl(270 100% 70%), hsl(240 100% 70%), hsl(180 100% 70%));
-    --gradient-neural-subtle: linear-gradient(135deg, hsl(270 100% 70% / 0.1), hsl(240 100% 70% / 0.1));
-    --gradient-card: linear-gradient(135deg, hsl(222 47% 8%), hsl(222 47% 10%));
-    --gradient-hero: linear-gradient(135deg, hsl(222 84% 5%), hsl(270 100% 15% / 0.3), hsl(222 84% 5%));
+    /* Professional Gradients */
+    --gradient-neural: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 20%), hsl(0 0% 40%));
+    --gradient-neural-subtle: linear-gradient(135deg, hsl(0 0% 96%), hsl(0 0% 98%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 94%), hsl(0 0% 98%));
     
-    /* Neural Network Shadows & Glows */
-    --shadow-neural: 0 0 30px hsl(270 100% 70% / 0.3);
-    --shadow-card: 0 10px 30px hsl(222 84% 5% / 0.5);
-    --shadow-glow: 0 0 40px hsl(270 100% 70% / 0.4);
-    --shadow-accent: 0 0 20px hsl(180 100% 70% / 0.3);
+    /* Professional Shadows */
+    --shadow-neural: 0 4px 20px hsl(0 0% 0% / 0.08);
+    --shadow-card: 0 2px 10px hsl(0 0% 0% / 0.06);
+    --shadow-glow: 0 8px 30px hsl(0 0% 0% / 0.12);
+    --shadow-accent: 0 4px 15px hsl(0 0% 0% / 0.1);
     
     /* Animations */
-    --transition-neural: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-glow: box-shadow 0.3s ease;
+    --transition-neural: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-glow: box-shadow 0.2s ease;
 
     --sidebar-background: 0 0% 98%;
 
@@ -78,33 +78,45 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 8%;
+    --foreground: 0 0% 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 8%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 60%;
+    --secondary-foreground: 0 0% 8%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 80%;
+    --accent-foreground: 0 0% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 98%;
+    
+    /* Dark mode gradients */
+    --gradient-neural: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 80%), hsl(0 0% 60%));
+    --gradient-neural-subtle: linear-gradient(135deg, hsl(0 0% 12%), hsl(0 0% 10%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 10%), hsl(0 0% 12%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 12%), hsl(0 0% 8%));
+    
+    /* Dark mode shadows */
+    --shadow-neural: 0 4px 20px hsl(0 0% 0% / 0.4);
+    --shadow-card: 0 2px 10px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 8px 30px hsl(0 0% 0% / 0.5);
+    --shadow-accent: 0 4px 15px hsl(0 0% 0% / 0.4);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -127,37 +139,35 @@
 }
 
 @layer components {
-  /* Neural Network Component Styles */
+  /* Professional Component Styles */
   .neural-glow {
-    @apply transition-all duration-300 hover:shadow-[var(--shadow-glow)];
+    @apply transition-all duration-200 hover:shadow-[var(--shadow-glow)];
   }
   
   .neural-card {
-    @apply bg-[length:200%_200%] bg-gradient-to-br from-card via-card/90 to-card/80 
-           border border-border/50 rounded-lg p-6 
+    @apply bg-card border border-border rounded-lg p-6 
            shadow-[var(--shadow-card)] 
            hover:shadow-[var(--shadow-neural)] 
-           transition-all duration-300;
+           transition-all duration-200;
   }
   
   .neural-button-hero {
-    @apply bg-gradient-to-r from-primary to-accent 
-           text-primary-foreground font-semibold px-8 py-3 rounded-lg
+    @apply bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-lg
            shadow-[var(--shadow-neural)] 
            hover:shadow-[var(--shadow-glow)]
-           hover:scale-105 transition-all duration-300;
+           hover:scale-[1.02] transition-all duration-200;
   }
   
   .neural-button-secondary {
-    @apply border-2 border-secondary/50 text-secondary 
-           hover:bg-secondary hover:text-secondary-foreground
+    @apply border border-border text-foreground 
+           hover:bg-muted hover:text-foreground
            font-semibold px-8 py-3 rounded-lg
            hover:shadow-[var(--shadow-accent)]
-           hover:scale-105 transition-all duration-300;
+           hover:scale-[1.02] transition-all duration-200;
   }
   
   .gradient-text {
-    @apply bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
   }
   
   .neural-pattern {

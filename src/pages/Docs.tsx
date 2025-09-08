@@ -100,11 +100,58 @@ const Docs = () => {
           ))}
         </div>
 
-        {/* Complete Functionality Guide */}
+          {/* Complete Functionality Guide */}
         <div className="neural-card mb-12">
           <h2 className="text-3xl font-bold mb-8 gradient-text">
             Complete Feature Guide
           </h2>
+          
+          {/* Model Management */}
+          <div className="mb-12">
+            <h3 className="text-2xl font-semibold mb-6 text-primary">
+              📁 Model Management
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="neural-card border border-primary/20">
+                <h4 className="text-lg font-semibold mb-3 text-primary">
+                  Save & Load
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Save custom architectures</li>
+                  <li>• Load from community models</li>
+                  <li>• Private & public model sharing</li>
+                  <li>• Version control with timestamps</li>
+                  <li>• Model attribution system</li>
+                </ul>
+              </div>
+
+              <div className="neural-card border border-secondary/20">
+                <h4 className="text-lg font-semibold mb-3 text-secondary">
+                  Explore & Search
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Browse community models</li>
+                  <li>• Search by name, creator, description</li>
+                  <li>• Filter by architecture type</li>
+                  <li>• Download models (auth required)</li>
+                  <li>• One-click playground loading</li>
+                </ul>
+              </div>
+
+              <div className="neural-card border border-accent/20">
+                <h4 className="text-lg font-semibold mb-3 text-accent">
+                  Authentication
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Secure user accounts</li>
+                  <li>• Personal model dashboard</li>
+                  <li>• Profile management</li>
+                  <li>• Access control for downloads</li>
+                  <li>• Model ownership tracking</li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
           {/* Layer System */}
           <div className="mb-12">
@@ -180,6 +227,20 @@ const Docs = () => {
                   <li>• Layer depth representation</li>
                   <li>• Weight flow animations</li>
                   <li>• Immersive exploration</li>
+                </ul>
+              </div>
+
+              <div className="neural-card">
+                <h4 className="text-lg font-semibold mb-3">
+                  Ensemble 3D View
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li>• Node-level visualization</li>
+                  <li>• Individual neuron spheres</li>
+                  <li>• Connection line rendering</li>
+                  <li>• CNN filter representations</li>
+                  <li>• Real-time weight updates</li>
+                  <li>• Training visualization</li>
                 </ul>
               </div>
             </div>
