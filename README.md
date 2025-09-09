@@ -14,20 +14,26 @@ Project Workspace: [Lovable.dev Project](https://lovable.dev/projects/b63f3bb9-9
 
 ## Current Requirements
 
+### Priori
+
+Training in ensemble using using randomization, can't be done (premium features) need to use EC2 load balancers
+
 ### Primary
 
-- Add another view in the playground, called Ensemble, in which i am able to see three-dimensional low level representation of the Neural Network, from nodes to all intern node connections, be very careful about this. for example let the dense neural network's nodes be small spheres and each connection be lines, use R3F or ThreeJs if required. for convolutional network show the 2D convolution rectangular representation, so for like dense neural network of 10 neurons, i should 10 small sphere each of them connecting to the other dense layer in front of it.
+- Fix Scroolbars, in the playground in areas like, layer inspector and layer toolbox, make the scroll bar more coherent with the current design
+- in home tab when the hero section goes to the next section, the grid needs to much more smoother transition in the next section, add a bottom blur to it,
+- DashBoard and Profile need to be added as a dropdowns to the mail tab, when i click the mail tab, where it is only signout right now, it should profiles, dashboard, signout. 
+- If the user hasn't saved a profile display name then show the mailid (like you are doing right now), but if the profile contains a display name then instead of mailid display name should be there. 
+
+Implement the changes only after understanding the analysiing the above requirements properly. Don't change the current functionality and design
 
 ### Secondary
 
-- the entire design has to be black-backgroundish
-- no gradients in the entire website
-- i asked you change the background of the playground to grid, you didn't do it. do it again
-- the contrast need to be corrected (background - text) in the website
   All new requirements should be added **without altering existing functionality**.
 - profiles tab to create name, <sync with authentication>
 - the colors of neurons should be different based on the bias provided to it. therefore create a map of bias to color
 - the image in the hero section needs to changed to something else which is more proffesional and sleek not the current one, change it or remove it.
+- add api token arena
 
 ---
 
