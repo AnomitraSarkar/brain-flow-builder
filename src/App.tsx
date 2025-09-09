@@ -11,6 +11,7 @@ import Docs from "./pages/Docs";
 import Playground from "./pages/Playground";
 import Explore from "./pages/Explore";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -31,6 +32,7 @@ const App = () => (
               <Route path="playground" element={<Playground />} />
               <Route path="explore" element={<Explore />} />
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

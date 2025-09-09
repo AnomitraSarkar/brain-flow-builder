@@ -6,7 +6,6 @@ export interface Profile {
   id: string;
   user_id: string;
   display_name: string | null;
-  avatar_url: string | null;
   bio: string | null;
   created_at: string;
   updated_at: string;
@@ -14,32 +13,39 @@ export interface Profile {
 
 export const useProfiles = () => {
   const [profiles, setProfiles] = useState<Record<string, Profile>>({});
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
-  const fetchProfile = async (userId: string) => {
+  // Fetch current user's profile
+  useEffect(() => {
+    if (user?.id) {
+      fetchProfile(user.id).then(setProfile);
+    }
+  }, [user?.id]);
+
+  const fetchProfile = async (userId: string): Promise<Profile | null> => {
     if (profiles[userId]) return profiles[userId];
 
     try {
-      // First try to get profile
-      const { data: profile, error: profileError } = await supabase
+      setLoading(true);
+      const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', userId)
         .single();
 
-      if (profile && !profileError) {
+      if (profile && !error) {
         setProfiles(prev => ({ ...prev, [userId]: profile }));
         return profile;
       }
 
-      // If no profile found, create a basic one with email
-      // For now, we'll return null and let the calling code handle it
-      // The actual user email fetching would need admin access
       return null;
     } catch (error) {
       console.error('Error fetching profile:', error);
       return null;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,6 +53,7 @@ export const useProfiles = () => {
     if (!user) return { error: 'No user logged in' };
 
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('profiles')
         .insert({
@@ -59,16 +66,20 @@ export const useProfiles = () => {
       if (error) return { error };
 
       setProfiles(prev => ({ ...prev, [user.id]: data }));
+      setProfile(data);
       return { data };
     } catch (error) {
       return { error };
+    } finally {
+      setLoading(false);
     }
   };
 
-  const updateProfile = async (updates: Partial<Profile>) => {
-    if (!user) return { error: 'No user logged in' };
+  const updateProfile = async (updates: Partial<Pick<Profile, 'display_name' | 'bio'>>) => {
+    if (!user) throw new Error('No user logged in');
 
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('profiles')
         .update(updates)
@@ -76,17 +87,23 @@ export const useProfiles = () => {
         .select()
         .single();
 
-      if (error) return { error };
+      if (error) throw error;
 
-      setProfiles(prev => ({ ...prev, [user.id]: data }));
-      return { data };
+      if (data) {
+        setProfiles(prev => ({ ...prev, [user.id]: data }));
+        setProfile(data);
+      }
     } catch (error) {
-      return { error };
+      console.error('Error updating profile:', error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   return {
     profiles,
+    profile,
     loading,
     fetchProfile,
     createProfile,
