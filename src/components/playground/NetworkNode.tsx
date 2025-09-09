@@ -42,13 +42,13 @@ const getLayerIcon = (type: LayerConfig['type']) => {
   }
 };
 
-// Bias-to-color mapping for neurons
+// Bias-to-color mapping for neurons with better contrast
 const getBiasColor = (bias: number): string => {
-  if (bias < -0.5) return 'bg-red-500/20 border-red-500/50';
-  if (bias < -0.2) return 'bg-orange-500/20 border-orange-500/50';
-  if (bias < 0.2) return 'bg-gray-500/20 border-gray-500/50';
-  if (bias < 0.5) return 'bg-blue-500/20 border-blue-500/50';
-  return 'bg-green-500/20 border-green-500/50';
+  if (bias < -0.5) return 'bg-red-900/30 border-red-500/70 text-red-200';
+  if (bias < -0.2) return 'bg-orange-900/30 border-orange-500/70 text-orange-200';
+  if (bias < 0.2) return 'bg-gray-900/30 border-gray-500/70 text-gray-200';
+  if (bias < 0.5) return 'bg-blue-900/30 border-blue-500/70 text-blue-200';
+  return 'bg-green-900/30 border-green-500/70 text-green-200';
 };
 
 const getLayerColor = (type: LayerConfig['type'], bias?: number) => {

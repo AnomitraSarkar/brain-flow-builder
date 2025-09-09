@@ -37,10 +37,10 @@ export const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                <div className="w-4 h-4 border-2 border-primary-foreground rounded-full"></div>
+              <div className="w-8 h-8 bg-primary/20 border border-primary/50 rounded-lg flex items-center justify-center">
+                <div className="w-4 h-4 border-2 border-primary rounded-full"></div>
               </div>
-              <span className="text-xl font-bold gradient-text">OpenNetwork</span>
+              <span className="text-xl font-bold text-foreground">OpenNetwork</span>
             </Link>
           </div>
 

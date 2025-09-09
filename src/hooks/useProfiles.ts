@@ -63,13 +63,17 @@ export const useProfiles = () => {
         .select()
         .single();
 
-      if (error) return { error };
+      if (error) {
+        console.error('Profile creation error:', error);
+        return { error: error.message || 'Failed to create profile' };
+      }
 
       setProfiles(prev => ({ ...prev, [user.id]: data }));
       setProfile(data);
       return { data };
     } catch (error) {
-      return { error };
+      console.error('Profile creation catch error:', error);
+      return { error: error instanceof Error ? error.message : 'Unknown error' };
     } finally {
       setLoading(false);
     }
@@ -80,6 +84,39 @@ export const useProfiles = () => {
 
     try {
       setLoading(true);
+      
+      // First, check if profile exists
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!existingProfile) {
+        // Create profile first if it doesn't exist
+        const { data: newProfile, error: createError } = await supabase
+          .from('profiles')
+          .insert({
+            user_id: user.id,
+            display_name: updates.display_name || '',
+            bio: updates.bio || '',
+          })
+          .select()
+          .single();
+
+        if (createError) {
+          console.error('Error creating profile:', createError);
+          throw new Error(createError.message || 'Failed to create profile');
+        }
+
+        if (newProfile) {
+          setProfiles(prev => ({ ...prev, [user.id]: newProfile }));
+          setProfile(newProfile);
+        }
+        return;
+      }
+
+      // Update existing profile
       const { data, error } = await supabase
         .from('profiles')
         .update(updates)
@@ -87,14 +124,17 @@ export const useProfiles = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error updating profile:', error);
+        throw new Error(error.message || 'Failed to update profile');
+      }
 
       if (data) {
         setProfiles(prev => ({ ...prev, [user.id]: data }));
         setProfile(data);
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error('Profile update error:', error);
       throw error;
     } finally {
       setLoading(false);
