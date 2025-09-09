@@ -42,20 +42,35 @@ const getLayerIcon = (type: LayerConfig['type']) => {
   }
 };
 
-const getLayerColor = (type: LayerConfig['type']) => {
+// Bias-to-color mapping for neurons
+const getBiasColor = (bias: number): string => {
+  if (bias < -0.5) return 'bg-red-500/20 border-red-500/50';
+  if (bias < -0.2) return 'bg-orange-500/20 border-orange-500/50';
+  if (bias < 0.2) return 'bg-gray-500/20 border-gray-500/50';
+  if (bias < 0.5) return 'bg-blue-500/20 border-blue-500/50';
+  return 'bg-green-500/20 border-green-500/50';
+};
+
+const getLayerColor = (type: LayerConfig['type'], bias?: number) => {
+  // If bias is provided, use bias-based coloring
+  if (bias !== undefined) {
+    return getBiasColor(bias);
+  }
+  
+  // Default monochrome colors for different layer types
   switch (type) {
-    case 'input': return 'from-primary to-primary-glow';
-    case 'dense': return 'from-accent to-accent-glow';
-    case 'conv2d': return 'from-secondary to-secondary-glow';
-    case 'maxpool': return 'from-primary to-accent';
-    case 'avgpool': return 'from-accent to-secondary';
-    case 'flatten': return 'from-secondary to-primary';
-    case 'batchnorm': return 'from-primary to-secondary';
-    case 'relu': return 'from-primary to-accent';
-    case 'tanh': return 'from-secondary to-primary';
-    case 'sigmoid': return 'from-accent to-secondary';
-    case 'softmax': return 'from-accent to-primary';
-    default: return 'from-muted to-muted-foreground';
+    case 'input': return 'bg-accent border-primary';
+    case 'dense': return 'bg-muted border-secondary';
+    case 'conv2d': return 'bg-card border-accent';
+    case 'maxpool': return 'bg-muted border-border';
+    case 'avgpool': return 'bg-accent border-border';
+    case 'flatten': return 'bg-card border-muted';
+    case 'batchnorm': return 'bg-muted border-accent';
+    case 'relu': return 'bg-accent border-primary';
+    case 'tanh': return 'bg-card border-secondary';
+    case 'sigmoid': return 'bg-muted border-primary';
+    case 'softmax': return 'bg-accent border-secondary';
+    default: return 'bg-muted border-border';
   }
 };
 
@@ -83,7 +98,9 @@ const getLayerInfo = (layer: LayerConfig) => {
 export const NetworkNode = memo(({ data }: NetworkNodeProps) => {
   const { layer, isSelected, onSelect, onDelete } = data;
   const IconComponent = getLayerIcon(layer.type);
-  const colorClass = getLayerColor(layer.type);
+  // Use bias for color if available (for dense layers with biases)
+  const averageBias = layer.biases ? layer.biases.reduce((a, b) => a + b, 0) / layer.biases.length : undefined;
+  const colorClass = getLayerColor(layer.type, averageBias);
   const layerInfo = getLayerInfo(layer);
 
   return (
@@ -104,10 +121,10 @@ export const NetworkNode = memo(({ data }: NetworkNodeProps) => {
       )}
       
       {/* Node Content */}
-      <div className={`neural-card min-w-[160px] p-4 cursor-pointer bg-gradient-to-r ${colorClass} text-primary-foreground`}>
+      <div className={`neural-card min-w-[160px] p-4 cursor-pointer ${colorClass} text-foreground border-2`}>
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-            <IconComponent className="w-4 h-4" />
+          <div className="w-8 h-8 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <IconComponent className="w-4 h-4 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-medium text-sm truncate">{layer.name}</div>
@@ -122,25 +139,25 @@ export const NetworkNode = memo(({ data }: NetworkNodeProps) => {
           <Button
             size="sm"
             variant="ghost"
-            className="w-6 h-6 p-0 bg-white/20 hover:bg-white/30"
+            className="w-6 h-6 p-0 bg-primary/10 hover:bg-primary/20 border border-primary/20"
             onClick={(e) => {
               e.stopPropagation();
               onSelect();
             }}
           >
-            <Settings className="w-3 h-3" />
+            <Settings className="w-3 h-3 text-primary" />
           </Button>
           {layer.type !== 'input' && (
             <Button
               size="sm"
               variant="ghost"
-              className="w-6 h-6 p-0 bg-red-500/20 hover:bg-red-500/30"
+              className="w-6 h-6 p-0 bg-destructive/10 hover:bg-destructive/20 border border-destructive/20"
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();
               }}
             >
-              <Trash2 className="w-3 h-3" />
+              <Trash2 className="w-3 h-3 text-destructive" />
             </Button>
           )}
         </div>

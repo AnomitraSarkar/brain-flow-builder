@@ -5,13 +5,8 @@ import heroImage from "@/assets/neural-network-hero.jpg";
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
-        style={{ backgroundImage: `url(${heroImage})` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden grid-background">
+      {/* Professional Grid Background Only */}
       
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

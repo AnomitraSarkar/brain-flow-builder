@@ -121,7 +121,7 @@ export const PlaygroundWorkspace = () => {
   };
 
   return (
-    <div className="h-screen bg-background flex flex-col">
+    <div className="h-screen bg-background playground-grid flex flex-col">
       {/* Toolbar */}
       <PlaygroundToolbar 
         viewMode={viewMode}
