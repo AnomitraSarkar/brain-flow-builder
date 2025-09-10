@@ -401,7 +401,7 @@ export const LayerToolbox = ({ onAddLayer }: LayerToolboxProps) => {
         </p>
       </div>
       
-      <div className="flex-1 p-4 overflow-y-auto">
+      <div className="flex-1 p-4 overflow-y-auto scrollbar-thin">
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="grid w-full grid-cols-7 mb-4 h-12">
             <TabsTrigger value="all" className="text-xs px-1">All</TabsTrigger>

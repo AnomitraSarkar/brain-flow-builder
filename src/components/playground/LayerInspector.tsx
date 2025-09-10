@@ -92,7 +92,7 @@ export const LayerInspector = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto scrollbar-thin">
         <Tabs defaultValue="parameters" className="w-full">
           <TabsList className="grid w-full grid-cols-3 m-4 mb-0">
             <TabsTrigger value="parameters">

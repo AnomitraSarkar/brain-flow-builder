@@ -66,6 +66,9 @@ export const HeroSection = () => {
         </div>
       </div>
       
+      {/* Bottom blur for smooth transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background via-background/80 to-transparent z-20"></div>
+      
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-3 h-3 bg-primary rounded-full animate-pulse opacity-60"></div>
       <div className="absolute bottom-32 right-16 w-2 h-2 bg-secondary rounded-full animate-pulse opacity-40"></div>

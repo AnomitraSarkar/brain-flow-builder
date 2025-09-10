@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Github, Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useProfiles } from "@/hooks/useProfiles";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +16,7 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { user, signOut } = useAuth();
+  const { profile } = useProfiles();
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -65,26 +67,39 @@ export const Navbar = () => {
 
           {/* Auth & GitHub Buttons */}
           <div className="hidden md:flex items-center space-x-3">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-foreground hover:text-primary">
+                  <User className="h-4 w-4 mr-2" />
+                  {profile?.display_name || user.email}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-background border border-border/50 shadow-lg z-50">
+                <DropdownMenuItem disabled className="text-muted-foreground">
+                  {profile?.display_name || user.email}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="flex items-center w-full">
                     <User className="h-4 w-4 mr-2" />
-                    {user.email}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="neural-card border-primary/20">
-                  <DropdownMenuItem disabled className="text-muted-foreground">
-                    {user.email}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut} className="text-destructive focus:text-destructive">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard" className="flex items-center w-full">
+                    <User className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signOut} className="text-destructive focus:text-destructive">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
               <Link to="/auth">
                 <Button variant="ghost" size="sm" className="text-foreground hover:text-foreground hover:bg-muted">
                   <User className="h-4 w-4 mr-2" />
@@ -135,7 +150,7 @@ export const Navbar = () => {
                 {user ? (
                   <div className="space-y-2">
                     <div className="text-sm text-muted-foreground px-3 py-2">
-                      {user.email}
+                      {profile?.display_name || user.email}
                     </div>
                     <Button 
                       variant="outline" 

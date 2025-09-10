@@ -86,11 +86,16 @@ export const useProfiles = () => {
       setLoading(true);
       
       // First, check if profile exists
-      const { data: existingProfile } = await supabase
+      const { data: existingProfile, error: fetchError } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
+
+      if (fetchError && fetchError.code !== 'PGRST116') {
+        console.error('Error fetching profile:', fetchError);
+        throw new Error(fetchError.message || 'Failed to fetch profile');
+      }
 
       if (!existingProfile) {
         // Create profile first if it doesn't exist
@@ -113,7 +118,7 @@ export const useProfiles = () => {
           setProfiles(prev => ({ ...prev, [user.id]: newProfile }));
           setProfile(newProfile);
         }
-        return;
+        return newProfile;
       }
 
       // Update existing profile
@@ -133,6 +138,8 @@ export const useProfiles = () => {
         setProfiles(prev => ({ ...prev, [user.id]: data }));
         setProfile(data);
       }
+      
+      return data;
     } catch (error) {
       console.error('Profile update error:', error);
       throw error;

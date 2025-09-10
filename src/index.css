@@ -199,6 +199,31 @@
     scrollbar-color: hsl(var(--primary) / 0.3) transparent;
   }
 
+  /* Global Scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border;
+    border-radius: 4px;
+    border: 1px solid hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground;
+  }
+
+  ::-webkit-scrollbar-corner {
+    @apply bg-background;
+  }
+
   .react-flow__pane::-webkit-scrollbar {
     width: 8px;
     height: 8px;
