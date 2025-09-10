@@ -152,33 +152,6 @@ export const PlaygroundWorkspace = () => {
             viewMode={viewMode}
           />
           
-          {/* View mode toggle overlay */}
-          <div className="absolute top-4 right-4 flex gap-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setShowInspector(!showInspector)}
-              className={`p-2 rounded-lg transition-colors ${
-                showInspector 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-card/50 border border-border/50'
-              }`}
-            >
-              {showInspector ? <EyeOff className="w-4 h-4" /> : <Settings className="w-4 h-4" />}
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setShowMetrics(!showMetrics)}
-              className={`p-2 rounded-lg transition-colors ${
-                showMetrics 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-card/50 border border-border/50'
-              }`}
-            >
-              {showMetrics ? <EyeOff className="w-4 h-4" /> : <BarChart3 className="w-4 h-4" />}
-            </motion.button>
-          </div>
         </div>
 
         {/* Right Sidebar - Layer Inspector */}

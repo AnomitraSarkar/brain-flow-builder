@@ -151,14 +151,6 @@ export const Network3D = ({ layers, selectedLayer, onLayerSelect }: Network3DPro
         />
       </Canvas>
       
-      {/* 3D Controls Overlay */}
-      <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur-lg rounded-lg p-3 border border-border/50">
-        <div className="text-xs text-muted-foreground space-y-1">
-          <div>• Drag to rotate</div>
-          <div>• Scroll to zoom</div>
-          <div>• Click layers to select</div>
-        </div>
-      </div>
     </div>
   );
 };

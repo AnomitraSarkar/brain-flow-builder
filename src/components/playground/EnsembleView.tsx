@@ -621,25 +621,6 @@ export const EnsembleView = ({ layers, selectedLayer, onLayerSelect, isTraining 
         />
       </Canvas>
       
-      {/* Controls Overlay */}
-      <div className="absolute bottom-4 left-4 bg-card/80 backdrop-blur-lg rounded-lg p-4 border border-border/50">
-        <div className="text-sm font-medium text-foreground mb-2">
-          Ensemble View {isTraining && <span className="text-amber-400">(Training)</span>}
-        </div>
-        <div className="text-xs text-muted-foreground space-y-1">
-          <div>• <span className="text-purple-400">Purple:</span> Input layers</div>
-          <div>• <span className="text-cyan-400">Cyan:</span> Dense nodes (size ∝ bias)</div>
-          <div>• <span className="text-green-400">Green:</span> Conv filters</div>
-          <div>• <span className="text-amber-400">Amber:</span> Max pooling</div>
-          <div>• <span className="text-red-400">Red:</span> Average pooling</div>
-          <div className="mt-2 pt-2 border-t border-border/30">
-            <div>• <span className="text-blue-400">Blue lines:</span> Positive weights</div>
-            <div>• <span className="text-red-400">Red lines:</span> Negative weights</div>
-            <div>• Line thickness ∝ weight magnitude</div>
-            <div className="mt-1">• Drag to rotate • Scroll to zoom</div>
-          </div>
-        </div>
-      </div>
       
       {/* Selected Layer Info */}
       {selectedLayer && (

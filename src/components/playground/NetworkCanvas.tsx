@@ -174,21 +174,6 @@ export const NetworkCanvas = ({
           gap={20} 
           size={1}
         />
-        <Controls 
-          className="bg-card/90 border border-primary/20 rounded-xl shadow-lg backdrop-blur-sm"
-        />
-        <MiniMap 
-          className="bg-card/90 border border-primary/20 rounded-xl shadow-lg backdrop-blur-sm"
-          nodeColor={(node) => {
-            const layer = layers.find(l => l.id === node.id);
-            switch (layer?.type) {
-              case 'input': return 'hsl(var(--primary))';
-              case 'dense': return 'hsl(var(--accent))';
-              case 'conv2d': return 'hsl(var(--secondary))';
-              default: return 'hsl(var(--muted))';
-            }
-          }}
-        />
       </ReactFlow>
     </div>
   );

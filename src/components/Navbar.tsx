@@ -23,10 +23,7 @@ export const Navbar = () => {
     { name: "Docs", href: "/docs" },
     { name: "Playground", href: "/playground" },
     { name: "Explore", href: "/explore" },
-    ...(user ? [
-      { name: "Dashboard", href: "/dashboard" },
-      { name: "Profile", href: "/profile" }
-    ] : []),
+    ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : []),
     { name: "About", href: "/about" },
   ];
 
@@ -81,16 +78,10 @@ export const Navbar = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/profile" className="flex items-center w-full">
+                  <button className="flex items-center w-full">
                     <User className="h-4 w-4 mr-2" />
-                    Profile
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard" className="flex items-center w-full">
-                    <User className="h-4 w-4 mr-2" />
-                    Dashboard
-                  </Link>
+                    API Token
+                  </button>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={signOut} className="text-destructive focus:text-destructive">
