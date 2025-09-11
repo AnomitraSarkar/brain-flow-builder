@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Github, Menu, X, User, LogOut } from "lucide-react";
+import { Github, Menu, X, User, LogOut, KeyRound, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfiles } from "@/hooks/useProfiles";
@@ -78,8 +78,20 @@ export const Navbar = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
+                  <Link to="/profile" className="flex items-center w-full">
+                     <User className="h-4 w-4 mr-2"/>
+                        Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard" className="flex items-center w-full">
+                     <LayoutDashboard className="h-4 w-4 mr-2"/>
+                        Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <button className="flex items-center w-full">
-                    <User className="h-4 w-4 mr-2" />
+                    <KeyRound className="h-4 w-4 mr-2" />
                     API Token
                   </button>
                 </DropdownMenuItem>
@@ -98,7 +110,7 @@ export const Navbar = () => {
                 </Button>
               </Link>
             )}
-            
+
             <a href="https://github.com/AnomitraSarkar/brain-flow-builder" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="border-border hover:bg-muted hover:text-foreground">
                 <Github className="h-4 w-4 mr-2" />
@@ -143,9 +155,9 @@ export const Navbar = () => {
                     <div className="text-sm text-muted-foreground px-3 py-2">
                       {profile?.display_name || user.email}
                     </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       className="w-full border-destructive/50 text-destructive hover:bg-destructive/10"
                       onClick={signOut}
                     >
@@ -174,4 +186,4 @@ export const Navbar = () => {
       </div>
     </nav>
   );
-};
+;
